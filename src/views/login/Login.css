@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+.login {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 100px;
+} 
+
+
+.login-form {
+    background-color: #A4663C;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 350px;
+    margin: auto;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+.login-form h1 {
+    color: #221518;
+}
+
+.login-form input {
+    height: 40px;
+    width: 90%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 20px;
+}
+
+.login-form button {
+    width: 90%;
+    height: 40px;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #221518;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+}
+
+.login-form button:hover {
+    background-color: #463432;
+}
+
+.login-form input::-webkit-input-placeholder {
+    color: #9d8781;
+    padding: 5px;
+}
+
+.link-cadastro .link {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    text-decoration: none;
+    color: var(--background-primary);
+}
+
+.vector {
+    width: 70px;
+    margin-top: 50px;
+}
+
+@media screen and (max-width: 768px){
+    .login-form {
+        width: 80%;
+    }
+}

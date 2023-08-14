@@ -1,0 +1,21 @@
+footer {
+    background-color: var(--background-secundary);
+    margin-top: 40px;
+    padding: 10px;
+}
+
+.titulo-footer h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer img {
+    width: 80px;
+}
+
+footer span {
+    font-size: 16px;
+}
+
+

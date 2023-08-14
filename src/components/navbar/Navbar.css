@@ -1,0 +1,18 @@
+nav {
+    background-color: var(--background-secundary);
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+nav img {
+    width: 80px;
+}
+
+.link-login {
+    color: var(--background-primary);
+    text-decoration: none;
+    
+}
