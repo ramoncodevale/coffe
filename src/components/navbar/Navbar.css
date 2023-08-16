@@ -7,6 +7,16 @@ nav {
     align-items: center;
 }
 
+.links {
+    display: flex;
+}
+
+.link-registro {
+    text-decoration: none;
+    color: var(--background-primary);
+    margin-left: 10px;
+}
+
 nav img {
     width: 80px;
 }
