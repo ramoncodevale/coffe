@@ -118,6 +118,18 @@ const CadastrarRegistro = () => {
             </p>
           )}
 
+<input type="number" name="turno" id="turno" placeholder='Turno:'
+            {...register("turno", {
+              required: true,
+            })}
+          />
+          {errors.turno && (
+            <p>
+              {errors.turno.type === "required" &&
+                "Por favor preencher esse campo"}
+            </p>
+          )}
+
           <input type="text" name="operador" id="operador" placeholder='Operador:'
             {...register("operador", {
               required: true,

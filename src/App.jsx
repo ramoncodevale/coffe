@@ -6,6 +6,7 @@ import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import Tabela from './views/tabela/Tabela';
 import CadastrarRegistro from './views/registros/CadastrarRegistro';
+import Turno from './views/turno/Turno';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/cadastro" element={<Cadastro/>} />
           <Route path="/cadastrar-registro" element={<CadastrarRegistro/>} />
           <Route path='/tabela-cadastro' element={<Tabela />} />
+          <Route path='/turno' element={<Turno />} />
         </Routes>
         <Footer />
       </BrowserRouter>

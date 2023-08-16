@@ -1,22 +1,43 @@
 import './Login.css';
 import Vector from '../../assets/vector-coffe.svg';
-import { Link } from 'react-router-dom';
-import { useForm } from "react-hook-form";
+import { Link, useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react'; 
+
 
 
 const Login = () => {
-  const {
-    register,
-    trigger,
-    formState: { errors }
-  } = useForm();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const onSubmit = async (e) => {
-    const isValid = await trigger();
-    if (!isValid) {
-      e.preventDefault();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+  
+      try {
+        const response = await axios.post("http://52.67.201.79:8080/api/login", {
+          email: data.email,
+          password: data.password, 
+        })
+        console.log(response.data)
+        localStorage.setItem('token', response.data.token); 
+        setIsLoggedIn(true);
+    
+
+      } catch (error) {
+        console.log(error)
+        
+      }
+
+      if (isLoggedIn) {
+        return <navigate to="/cadastrar-registro" /> ; // Redirecionar para a página após o login
+      }
+    
+     
     }
-  };
+
+  
+
+   
   return (
     <>
       <div className='login'>
@@ -25,35 +46,18 @@ const Login = () => {
           <input
             type="email"
             placeholder="Email:"
-            {...register("email", {
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-            })}
+          
           />
-          {errors.email && (
-            <p>
-              {errors.email.type === "required" &&
-                "Por favor preencher esse campo"}
-              {errors.email.type === "pattern" && "Email inexistente"}
-            </p>
-          )}
+          
           <input
             type="password"
             name="senha"
             id="senha"
             placeholder='Senha:'
-            {...register('password', {
-              required: true,
-            })}
-
+           
           />
 
-          {errors.password && (
-            <p>
-              {errors.password.type === "required" &&
-                "Por favor preencher esse campo"}
-            </p>
-          )}
+         
           <button type="submit">Entrar</button>
           <div className='link-cadastro'>
             <p>Não tem Cadastro ?</p>
@@ -64,6 +68,6 @@ const Login = () => {
       <img className='vector' src={Vector} alt='Vector café' />
     </>
   )
-}
+  }
 
 export default Login

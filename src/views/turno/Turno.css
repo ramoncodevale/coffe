@@ -1,0 +1,12 @@
+.turno {
+    margin-top: 150px;
+}
+
+.container-turno {
+    display: flex;
+    justify-content: center;
+}
+
+.container-turno p {
+    color: #fff;
+}
