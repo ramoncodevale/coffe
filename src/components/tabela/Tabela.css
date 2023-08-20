@@ -1,0 +1,43 @@
+.tabela-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+table {
+    width: 80%;
+}
+
+.titulo-tabela {
+    text-align: center;
+    color: #fff;
+    margin-top: 50px;
+}
+
+
+.horario {
+    background-color: var(--background-secundary);
+    border: none;
+    display: block;
+}
+
+
+
+/* Estilizando o cabeçalho da tabela */
+thead th {
+    background-color: var(--background-secundary);
+    padding: 10px;
+    text-align: left;
+}
+
+/* Estilizando as células da tabela */
+td {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Estilizando linhas alternadas */
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

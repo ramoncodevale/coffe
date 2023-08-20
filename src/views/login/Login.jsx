@@ -1,43 +1,52 @@
+import { useState } from 'react';
 import './Login.css';
 import Vector from '../../assets/vector-coffe.svg';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useState } from 'react'; 
-
-
 
 const Login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    senha: '',
+  });
 
-  const navigate = useNavigate();
-
-  const onSubmit = async (data) => {
   
-      try {
-        const response = await axios.post("http://52.67.201.79:8080/api/login", {
-          email: data.email,
-          password: data.password, 
-        })
-        console.log(response.data)
-        localStorage.setItem('token', response.data.token); 
-        setIsLoggedIn(true);
-    
 
-      } catch (error) {
-        console.log(error)
-        
-      }
+  const [loginStatus, setLoginStatus] = useState(null);
 
-      if (isLoggedIn) {
-        return <navigate to="/cadastrar-registro" /> ; // Redirecionar para a página após o login
-      }
-    
-     
+  const { email, senha } = formData;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.get("http://52.67.201.79:8080/api/login", {
+        email: formData.email,
+        senha: formData.senha,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setLoginStatus('sucesso');
+
+      console.log(response)
+
+    } catch (error) {
+      setLoginStatus('falha');
+      console.log(error);
     }
+  }
 
-  
-
-   
   return (
     <>
       <div className='login'>
@@ -45,20 +54,23 @@ const Login = () => {
           <h1>Login</h1>
           <input
             type="email"
+            name="email" 
             placeholder="Email:"
-          
+            value={email}
+            onChange={handleInputChange}
           />
           
           <input
             type="password"
-            name="senha"
-            id="senha"
+            name="senha" 
             placeholder='Senha:'
-           
+            value={senha}
+            onChange={handleInputChange}
           />
 
-         
           <button type="submit">Entrar</button>
+          {loginStatus === 'sucesso' && <p>Login bem-sucedido!</p>}
+          {loginStatus === 'falha' && <p>Falha no login. Verifique suas credenciais.</p>}
           <div className='link-cadastro'>
             <p>Não tem Cadastro ?</p>
             <Link to="/cadastro" className='link'><strong>Criar uma Conta</strong></Link>
@@ -67,7 +79,7 @@ const Login = () => {
       </div>
       <img className='vector' src={Vector} alt='Vector café' />
     </>
-  )
-  }
+  );
+}
 
-export default Login
+export default Login;

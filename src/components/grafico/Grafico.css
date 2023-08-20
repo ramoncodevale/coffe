@@ -1,0 +1,5 @@
+.card-grafico {
+    background-color: var(--background-secundary);
+    width: 500px;
+    border-radius: 10px;
+}

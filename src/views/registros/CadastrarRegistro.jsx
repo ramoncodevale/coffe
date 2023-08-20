@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
 
 const CadastrarRegistro = () => {
   const {
@@ -17,89 +14,7 @@ const CadastrarRegistro = () => {
     }
   };
 
-  const COLORS = [
-    "yellow",
-    "#0F084B",
-    "#DE1A1A",
-    "pink"
-    // ... (add more colors if needed)
-  ];
-
-  const contentChart = [
-    {
-      nome: 'Ramon',
-      turno: 'noite',
-      perda: 1200,
-    },
-    {
-      nome: 'Roger',
-      turno: 'manhã',
-      perda: 1000,
-    },
-    {
-      nome: 'Fernando',
-      turno: 'tarde',
-      perda: 3000,
-    },
-    {
-      nome: 'Maria',
-      turno: 'Manhã',
-      perda: 6000,
-    },
-  ];
-
-  const data = contentChart.map((item, index) => ({
-    name: item.nome,
-    y: item.perda,
-    turno: item.turno,
-    color: COLORS[index % COLORS.length],
-  }));
-
-  const options = {
-    chart: {
-      type: "pie",
-      height: 400,
-      backgroundColor: "transparent",
-    },
-    title: {
-      text: null,
-    },
-    tooltip: {
-      formatter: function () {
-        return `<b>${this.key}</b>: perda:${this.y.toLocaleString()}`;
-      },
-    },
-    plotOptions: {
-      pie: {
-        innerSize: "60%",
-        dataLabels: {
-          enabled: false,
-        },
-      },
-    },
-    series: [
-      {
-        name: "operador",
-        data: data,
-        showInLegend: true,
-      },
-    ],
-    accessibility: {
-      enabled: false,
-    },
-    legend: {
-      layout: "horizontal",
-      align: "center",
-      verticalAlign: "top",
-      itemWidth: 150,
-      itemMarginBottom: 10,
-      itemStyle: {
-        fontWeight: "normal",
-        color: "#fff",
-      },
-    },
-  };
-
+ 
   return (
     <>
 
@@ -199,9 +114,7 @@ const CadastrarRegistro = () => {
         </form>
       </div>
 
-      <div className="radial" style={{ width: "100%", height: "400px", marginTop:'20px'}}>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </div>
+   
 
     </>
   );

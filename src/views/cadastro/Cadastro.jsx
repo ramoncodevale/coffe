@@ -13,7 +13,7 @@ const Cadastro = () => {
   })
   const [formValues, setFormValues] = useState({
     nome: '',
-    sobrenome: '',
+    sobreNome: '',
     email: '',
     senha: '',
     telefone: '',
@@ -43,7 +43,7 @@ const Cadastro = () => {
       errors.nome = 'o campo nome é obrigatório'
     }
 
-    if (!formValues.sobrenome) {
+    if (!formValues.sobreNome) {
       errors.sobreNome = 'o campo sobreNome é obrigatório'
     }
 
@@ -106,10 +106,10 @@ const Cadastro = () => {
 
           <input
             type="text"
-            name="sobrenome"
-            id="sobrenome"
+            name="sobreNome"
+            id="sobreNome"
             placeholder='Sobrenome:'
-            value={formValues.sobrenome}
+            value={formValues.sobreNome}
             onChange={handleInputChange}
           />
 
@@ -172,4 +172,3 @@ const Cadastro = () => {
 }
 
 export default Cadastro
-
