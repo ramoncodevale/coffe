@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Form.css';
 
-// import {
-//     format, formatDistance
-// } from 'date-fns'
+import {
+    format
+} from 'date-fns'
 
 const Form = () => {
     const [formData, setFormData] = useState({
@@ -37,12 +37,24 @@ const Form = () => {
         // Antes de enviar os dados, o useEffect será responsável por verificar e enviar
     };
 
-    // const today = new Date()
+    const today = new Date()
 
-    // const formateDate = format(today, 'dd-MM-yyyy;')
+    const formateDate = format(today, 'dd/MM/yyyy')
+
+
 
     return (
         <form className="input-cadastro">
+             <div className='input-container'>
+                <label>Data</label>
+                <input
+                    type="text"
+                    placeholder="Data"
+                    name="data"
+                    value={formateDate}
+                />
+            </div>
+
             <div className='input-container'>
                 <label>Operador</label>
                 <input
@@ -65,6 +77,17 @@ const Form = () => {
                 />
             </div>
 
+            <div className='input-container'>
+                <label>Máquina</label>
+                <input
+                    type="text"
+                    placeholder="Maquína"
+                    name="maquina"
+                    value={formData.maquina}
+                    onChange={(e) => setFormData({ ...formData, maqunia: e.target.value })}
+                />
+            </div>
+
 
             <div className='input-container'>
                 <label>Ge %</label>
@@ -82,7 +105,7 @@ const Form = () => {
             <label>Meta por Hora</label>
                 <input
                     type="text"
-                    placeholder="Meta por HORA"
+                    placeholder="Meta por hora"
                     name="metaPorHora"
                     value={formData.metaPorHora}
                     onChange={(e) => setFormData({ ...formData, metaPorHora: e.target.value })}
@@ -101,6 +124,8 @@ const Form = () => {
               </div>
 
                 <button onClick={handleSubmit}>Abrir Turno</button>
+                
+               
         </form>
     );
 };

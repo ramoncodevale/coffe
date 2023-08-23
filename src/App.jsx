@@ -9,6 +9,7 @@ import Graficos from './views/graficos/Graficos';
 import Form from './components/form/Form';
 import Tabela from './components/tabela/Tabela';
 
+
 const App = () => {
   return (
      <>
@@ -22,11 +23,6 @@ const App = () => {
           <Route path='/graficos' element={<Graficos />} />
           <Route path='/tabela' element={<Tabela />} />
           <Route path='/form' element={<Form />} />
-
-
-
-
-          
         </Routes>
         <Footer />
       </BrowserRouter>
