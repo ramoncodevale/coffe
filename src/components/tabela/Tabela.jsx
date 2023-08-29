@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CTable, CTableHead, CTableRow,CTableHeaderCell, CTableBody, CTableDataCell, CCol} from '@coreui/react'
 import './Tabela.css';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -148,41 +149,54 @@ const Tabela = () => {
           <h1 className='titulo-tabela'>CHECAR (check)</h1>
           <h1 className='titulo-tabela'>Turno 1 °</h1>
           <div className='tabela-container'>
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>TURNO</th>
-                  <th>META POR HORA</th>
-                  <th>PRODUZIDO</th>
-                  <th>QUALIDADE</th>
-                  <th>SHE</th>
-                  <th>DESP. EMBALAGEM</th>
-                  <th>DESP. CAFÉ</th>
-                  <th>MÁQUINA</th>
-                  <th>OPERADOR</th>
-                </tr>
-              </thead>
-              <tbody>
+
+<CCol>
+            <CTable className="custom-table border border-dark" responsive hover>
+         <CTableHead className='bg-table'  >
+    <CTableRow>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
+      <CTableHeaderCell scope="col"
+      style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
+    </CTableRow>
+  </CTableHead>
+              <CTableBody>
                 {data.map(item => (
-                  <tr key={item.id}>
-                    <td className='horario'>
+                  <CTableRow key={item.id}>
+                    <CTableDataCell className='horario'
+                    style={{ backgroundColor: '#A4663C'}}>
                       {item.producoes.map((producao, index) => (
                         <div key={index}>{producao.horario.faixa}</div>
                       ))}
-                    </td>
-                    {/* Rest of the columns */}
-                    <td>{item.maquina.metaHora}</td>
-                    <td>{item.produzido}</td>
-                    <td>{item.qualidade ? 'OK' : 'NOK'}</td>
-                    <td>{item.she ? 'OK' : 'NOK'}</td>
-                    <td>{item.desperdicioEmbalagem}</td>
-                    <td>{item.desperdicioCafe}</td>
-                    <td>{item.maquina.nome}</td>
-                    <td>{`${item.operador.nome} ${item.operador.sobreNome}`}</td>
-                  </tr>
+                    </CTableDataCell>
+                  
+                    <CTableDataCell>{item.maquina.metaHora}</CTableDataCell>
+                    <CTableDataCell>{item.produzido}</CTableDataCell>
+                    <CTableDataCell>{item.qualidade ? 'OK' : 'NOK'}</CTableDataCell>
+                    <CTableDataCell>{item.she ? 'OK' : 'NOK'}</CTableDataCell>
+                    <CTableDataCell>{item.desperdicioEmbalagem}</CTableDataCell>
+                    <CTableDataCell>{item.desperdicioCafe}</CTableDataCell>
+                    <CTableDataCell>{item.maquina.nome}</CTableDataCell>
+                    <CTableDataCell>{`${item.operador.nome} ${item.operador.sobreNome}`}</CTableDataCell>
+                  </CTableRow>
                 ))}
-              </tbody>
-            </table>
+              </CTableBody>
+            </CTable>
+            </CCol>
           </div>
         </>
       )}
@@ -191,44 +205,55 @@ const Tabela = () => {
       {turnoAberto === 2 && (
         <>
           <h1 className='titulo-tabela'>Turno 2 °</h1>
-          <div className="tabela-container">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>TURNO</th>
-                  <th>META POR HORA</th>
-                  <th>PRODUZIDO</th>
-                  <th>QUALIDADE</th>
-                  <th>SHE</th>
-                  <th>DESP. EMBALAGEM</th>
-                  <th>DESP. CAFÉ</th>
-                  <th>MÁQUINA</th>
-                  <th>OPERADOR</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                {data.map(item => (
-                  <tr key={item.id}>
-                    <td className='horario'>
-                      {item.producoes.map((producao, index) => (
-                        <div key={index}>{producao.horario.faixa}</div>
-                      ))}
-                    </td>
-                    {/* Rest of the columns */}
-                    <td>{item.maquina.metaHora}</td>
-                    <td>{item.produzido}</td>
-                    <td>{item.qualidade ? 'OK' : 'NOK'}</td>
-                    <td>{item.she ? 'OK' : 'NOK'}</td>
-                    <td>{item.desperdicioEmbalagem}</td>
-                    <td>{item.desperdicioCafe}</td>
-                    <td>{item.maquina.nome}</td>
-                    <td>{`${item.operador.nome} ${item.operador.sobreNome}`}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
+          <div className="tabela-container " >
+          <CCol>
+          <CTable className="custom-table  border border-dark" responsive hover>
+              
+              <CTableHead className='bg-table'  >
+         <CTableRow>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
+         </CTableRow>
+       </CTableHead>
+                   <CTableBody>
+                     {data.map(item => (
+                       <CTableRow key={item.id}>
+                         <CTableDataCell className='horario'
+                         style={{ backgroundColor: '#A4663C'}}>
+                           {item.producoes.map((producao, index) => (
+                             <div key={index}>{producao.horario.faixa}</div>
+                           ))}
+                         </CTableDataCell>
+                       
+                         <CTableDataCell>{item.maquina.metaHora}</CTableDataCell>
+                         <CTableDataCell>{item.produzido}</CTableDataCell>
+                         <CTableDataCell>{item.qualidade ? 'OK' : 'NOK'}</CTableDataCell>
+                         <CTableDataCell>{item.she ? 'OK' : 'NOK'}</CTableDataCell>
+                         <CTableDataCell>{item.desperdicioEmbalagem}</CTableDataCell>
+                         <CTableDataCell>{item.desperdicioCafe}</CTableDataCell>
+                         <CTableDataCell>{item.maquina.nome}</CTableDataCell>
+                         <CTableDataCell>{`${item.operador.nome} ${item.operador.sobreNome}`}</CTableDataCell>
+                       </CTableRow>
+                     ))}
+                   </CTableBody>
+                 </CTable>
+             </CCol>
           </div>
 
         </>

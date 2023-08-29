@@ -1,89 +1,78 @@
-
-
 .input-cadastro {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px; /* Adjust the maximum width as needed */
-    margin: 0 auto; /* Center the form horizontally */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-top: 50px;
-  }
-  
-  .input-container {
-    margin-bottom: 10px;
-  }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: var(--background-secundary); /* Adjust the color as needed */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: var(--background-primary); /* Adjust the hover color as needed */
-  }
-  
+  /* Your existing styles */
+}
 
+.input-container {
+  /* Your existing styles */
+}
+
+label {
+  /* Your existing styles */
+}
+
+input[type="text"] {
+  /* Your existing styles */
+}
+
+button {
+  /* Your existing styles */
+}
+
+button:hover {
+  /* Your existing styles */
+}
 
 .tabela-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 table {
-    width: 80%;
+  width: 100%;
+  border-collapse: collapse; /* Add this to collapse table borders */
+  border-spacing: 0; /* Remove spacing between table cells */
 }
 
 .titulo-tabela {
-    text-align: center;
-    color: #fff;
-    margin-top: 50px;
+  text-align: center;
+  color: #fff;
+  margin-top: 50px;
 }
-
 
 .horario {
-    background-color: var(--background-secundary);
-    border: none;
-    display: block;
+  /* Your existing styles */
 }
-
-
 
 thead th {
-    background-color: var(--background-secundary);
-    padding: 10px;
-    text-align: left;
+  background-color: var(--background-secundary);
+  padding: 10px;
+  text-align: left;
 }
-
 
 td {
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
 }
 
-
 tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
+}
+
+.bg-table {
+  background-color: var(--background-primary);
+}
+
+@media (max-width: 600px) {
+  table {
+      font-size: 12px;
+  }
+
+  th,
+  td {
+      padding: 5px;
+  }
 }
