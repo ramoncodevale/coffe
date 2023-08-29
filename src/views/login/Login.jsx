@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get("https://52.67.201.79:8080/api/login", {
+      const response = await axios.get("http://52.67.201.79:8080/api/login", {
         email: formData.email,
         senha: formData.senha,
       }, {
