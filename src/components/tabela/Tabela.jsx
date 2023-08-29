@@ -22,9 +22,8 @@ const Tabela = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://52.67.201.79:8080/api/turno', {
+        const response = await axios.get('https://52.67.201.79:8080/api/turno', {
           headers: {
-            "Content-Type": 'application/json',
             'Content-Security-Policy': 'upgrade-insecure-requests', // Configuração de política de segurança
 
           }
