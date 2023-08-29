@@ -34,6 +34,8 @@ const Login = () => {
       }, {
         headers: {
           'Content-Type': 'application/json',
+            'Content-Security-Policy': 'upgrade-insecure-requests', // Configuração de política de segurança
+          
         },
       });
 
