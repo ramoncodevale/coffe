@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import './Login.css';
 import Vector from '../../assets/vector-coffe.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
-    senha: '',
+    password: '',
   });
 
+  const navigate = useNavigate()
   
 
   const [loginStatus, setLoginStatus] = useState(null);
 
-  const { email, senha } = formData;
+  const { email, password } = formData;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,25 +29,30 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get("http://52.67.201.79:8080/api/login", {
+      const response = await axios.post("https://server-production-9d29.up.railway.app/login", {
         email: formData.email,
-        senha: formData.senha,
-      }, {
-        headers: {
-            'Content-Security-Policy': 'upgrade-insecure-requests', // Configuração de política de segurança
-          
-        },
+        password: formData.password,
       });
 
       setLoginStatus('sucesso');
 
       console.log(response)
 
+      navigate('/tabela')
+
     } catch (error) {
       setLoginStatus('falha');
       console.log(error);
     }
   }
+
+  
+  const handleLogout = () => {
+    // Limpar os dados de autenticação (por exemplo, definir loginStatus como null)
+    setLoginStatus(null);
+    // Redirecionar para a página de login (ou página inicial)
+    navigate('/login');
+  };
 
   return (
     <>
@@ -63,19 +69,21 @@ const Login = () => {
           
           <input
             type="password"
-            name="senha" 
+            name="password" 
             placeholder='Senha:'
-            value={senha}
+            value={password}
             onChange={handleInputChange}
           />
 
           <button type="submit">Entrar</button>
           {loginStatus === 'sucesso' && <p>Login bem-sucedido!</p>}
           {loginStatus === 'falha' && <p>Falha no login. Verifique suas credenciais.</p>}
+          {loginStatus === 'sucesso' && <button onClick={handleLogout}>Logout</button>}
           <div className='link-cadastro'>
             <p>Não tem Cadastro ?</p>
             <Link to="/cadastro" className='link'><strong>Criar uma Conta</strong></Link>
           </div>
+
         </form>
       </div>
       <img className='vector' src={Vector} alt='Vector café' />

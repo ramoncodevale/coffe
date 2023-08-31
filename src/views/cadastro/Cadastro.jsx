@@ -3,7 +3,7 @@ import './Cadastro.css'
 import Vector from '../../assets/vector-coffe.svg';
 import axios from 'axios';
 
-
+import { useNavigate  } from 'react-router-dom';
 
 const Cadastro = () => {
   const [status, setStatus] = useState({
@@ -12,68 +12,77 @@ const Cadastro = () => {
 
   })
   const [formValues, setFormValues] = useState({
-    nome: '',
-    sobreNome: '',
+    name: '',
+    surname: '',
     email: '',
-    senha: '',
-    telefone: '',
+    password: '',
+    telephone: '',
   })
 
   const [formErrors, setFormErrors] = useState({
-    nome: '',
-    sobreNome: '',
+    name: '',
+    surname: '',
     email: '',
-    senha: '',
-    telefone: '',
+    password: '',
+    telephone: '',
   })
 
+  const navigate = useNavigate()
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setFormValues({ ...formValues, [name]: value })
-  }
 
+  const { name, surname, email, password, telephone } = formValues;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
     let errors = {}
 
-    if (!formValues.nome) {
-      errors.nome = 'o campo nome é obrigatório'
+    if (!formValues.name) {
+      errors.name = 'o campo nome é obrigatório'
     }
 
-    if (!formValues.sobreNome) {
-      errors.sobreNome = 'o campo sobreNome é obrigatório'
+    if (!formValues.surname) {
+      errors.surname = 'o campo sobreNome é obrigatório'
     }
 
     if (!formValues.email) {
       errors.email = 'o campo email é obrigatório'
     }
 
-    if (!formValues.telefone) {
-      errors.telefone = 'o campo telefone é obrigatório'
+    if (!formValues.telephone) {
+      errors.telefhone = 'o campo telefone é obrigatório'
     }
 
-    if (!formValues.senha) {
-      errors.senha = 'o campo senha é obrigatório'
+    if (!formValues.password) {
+      errors.password = 'o campo senha é obrigatório'
     }
 
     setFormErrors(errors)
 
 
     try {
-      const response = await axios.post('http://52.67.201.79:8080/api/usuario', formValues, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        
-      });
+      const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar-usuario',{
+        name: formValues.name,
+        surname: formValues.surname,
+        email: formValues.email,
+        password: formValues.password,
+        telephone: formValues.telephone
+      ,});
 
       setStatus({
         type: 'success',
         message: response.data.message,
       })
+
+      navigate('/')
     } catch (error) {
       setStatus({
         type: 'erro',
@@ -91,14 +100,14 @@ const Cadastro = () => {
 
           <input
             type="text"
-            name="nome"
-            id="nome"
+            name="name"
+            id="name"
             placeholder='Nome:'
             value={formValues.nome}
             onChange={handleInputChange}
           />
 
-          {formErrors.nome && (
+          {formErrors.name && (
             <div>
               <p>{formErrors}</p>
             </div>
@@ -106,14 +115,14 @@ const Cadastro = () => {
 
           <input
             type="text"
-            name="sobreNome"
-            id="sobreNome"
+            name="surname"
+            id="surname"
             placeholder='Sobrenome:'
             value={formValues.sobreNome}
             onChange={handleInputChange}
           />
 
-          {formErrors.nome && (
+          {formErrors.surname && (
             <div>
               <p>{formErrors}</p>
             </div>
@@ -127,7 +136,7 @@ const Cadastro = () => {
             value={formValues.email}
             onChange={handleInputChange}
           />
-          {formErrors.nome && (
+          {formErrors.email && (
             <div>
               <p>{formErrors}</p>
             </div>
@@ -135,14 +144,14 @@ const Cadastro = () => {
 
           <input
             type="tel"
-            name="telefone"
-            id="telefone"
+            name="telephone"
+            id="telephone"
             placeholder='Telefone:'
-            value={formValues.telefone}
+            value={formValues.telephone}
             onChange={handleInputChange}
           />
 
-          {formErrors.nome && (
+          {formErrors.telephone && (
             <div>
               <p>{formErrors}</p>
             </div>
@@ -150,14 +159,14 @@ const Cadastro = () => {
 
           <input
             type="password"
-            name="senha"
-            id="senha"
+            name="password"
+            id="password"
             placeholder='Senha:'
-            value={formValues.senha}
+            value={formValues.password}
             onChange={handleInputChange}
           />
 
-          {formErrors.nome && (
+          {formErrors.password && (
             <div>
               <p>{formErrors}</p>
             </div>
