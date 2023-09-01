@@ -12,7 +12,12 @@ const Form = () => {
         periodo: '',
         ge: '',
         metaPorHora: '',
-        planejado: ''
+        planejado: '',
+        produzido: '',
+        desperdiçoEmbalagem: '',
+        desperdiçoCafé: '',
+        qualidade: '',
+        she: '',
     });
 
     useEffect(() => {
@@ -120,6 +125,18 @@ const Form = () => {
                     name="planejado"
                     value={formData.planejado}
                     onChange={(e) => setFormData({ ...formData, planejado: e.target.value })}
+                />
+              </div>
+
+              <div className='input-container'>
+            <label>Produzido
+            </label>
+                <input
+                    type="text"
+                    placeholder="Produzido"
+                    name="produzido"
+                    value={formData.produzido}
+                    onChange={(e) => setFormData({ ...formData, produzido: e.target.value })}
                 />
               </div>
 

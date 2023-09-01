@@ -9,11 +9,16 @@ const Tabela = () => {
   const [formData, setFormData] = useState({
     operador: '',
     periodo: '',
-    maquina: '', // Changed from 'maqunia' to 'maquina'
     ge: '',
     metaPorHora: '',
-    planejado: ''
-  });
+    planejado: '',
+    produzido: '',
+    desperdiçoEmbalagem: '',
+    desperdiçoCafé: '',
+    qualidade: '',
+    she: '',
+});
+
 
   // State for table data
   const [data, setData] = useState([]);
@@ -36,6 +41,7 @@ const Tabela = () => {
 
     fetchData();
   }, []);
+  
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -77,6 +83,7 @@ const Tabela = () => {
             name="operador"
             value={formData.operador}
             onChange={(e) => setFormData({ ...formData, operador: e.target.value })}
+            readOnly
           />
         </div>
 
@@ -135,6 +142,68 @@ const Tabela = () => {
           />
         </div>
 
+        
+        <div className='input-container'>
+            <label>Produzido
+            </label>
+                <input
+                    type="text"
+                    placeholder="Produzido"
+                    name="produzido"
+                    value={formData.produzido}
+                    onChange={(e) => setFormData({ ...formData, produzido: e.target.value })}
+                />
+              </div>
+
+              <div className='input-container'>
+            <label>Desp.café
+            </label>
+                <input
+                    type="text"
+                    placeholder="desp café"
+                    name="desperdiçoCafé"
+                    value={formData.desperdiçoCafé}
+                    onChange={(e) => setFormData({ ...formData, desperdiçoCafé: e.target.value })}
+                />
+              </div>
+
+              <div className='input-container'>
+            <label>Desp.Embalagem
+            </label>
+                <input
+                    type="text"
+                    placeholder="desp embalagem"
+                    name="desperdiçoEmbalagem"
+                    value={formData.desperdiçoEmbalagem}
+                    onChange={(e) => setFormData({ ...formData, desperdiçoEmbalagem: e.target.value })}
+                />
+              </div>
+
+              <div className='input-container'>
+            <label>Qualidade
+            </label>
+                <input
+                    type="text"
+                    placeholder="qualidade"
+                    name="qualidade"
+                    value={formData.qualidade}
+                    onChange={(e) => setFormData({ ...formData, qualidade: e.target.value })}
+                />
+              </div>
+
+              
+              <div className='input-container'>
+            <label>she
+            </label>
+                <input
+                    type="text"
+                    placeholder="she"
+                    name="she"
+                    value={formData.she}
+                    onChange={(e) => setFormData({ ...formData, she: e.target.value })}
+                />
+              </div>
+
         <button type='submit'>Salvar Alteração</button>
 
         <button type="button" style={{ marginTop: '10px' }} onClick={() => abrirTurno(1)}>
@@ -150,54 +219,50 @@ const Tabela = () => {
           <h1 className='titulo-tabela'>CHECAR (check)</h1>
           <h1 className='titulo-tabela'>Turno 1 °</h1>
           <div className='tabela-container'>
-
-<CCol>
-            <CTable className="custom-table border border-dark" responsive hover>
-         <CTableHead className='bg-table'  >
-    <CTableRow>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
-      <CTableHeaderCell scope="col"
-      style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
-    </CTableRow>
-  </CTableHead>
-              <CTableBody>
-                {data.map(item => (
-                  <CTableRow key={item.id}>
-                    <CTableDataCell className='horario'
-                    style={{ backgroundColor: '#A4663C'}}>
-                      {item.producoes.map((producao, index) => (
-                        <div key={index}>{producao.horario.faixa}</div>
-                      ))}
-                    </CTableDataCell>
-                  
-                    <CTableDataCell>{item.maquina.metaHora}</CTableDataCell>
-                    <CTableDataCell>{item.produzido}</CTableDataCell>
-                    <CTableDataCell>{item.qualidade ? 'OK' : 'NOK'}</CTableDataCell>
-                    <CTableDataCell>{item.she ? 'OK' : 'NOK'}</CTableDataCell>
-                    <CTableDataCell>{item.desperdicioEmbalagem}</CTableDataCell>
-                    <CTableDataCell>{item.desperdicioCafe}</CTableDataCell>
-                    <CTableDataCell>{item.maquina.nome}</CTableDataCell>
-                    <CTableDataCell>{`${item.operador.nome} ${item.operador.sobreNome}`}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-            </CCol>
+          <CCol>
+          <CTable className="custom-table  border border-dark" responsive hover>
+              
+              <CTableHead className='bg-table'  >
+         <CTableRow>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
+           <CTableHeaderCell scope="col"
+           style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
+         </CTableRow>
+       </CTableHead>
+                   <CTableBody>
+                       <CTableRow >
+                         <CTableDataCell className='horario'
+                         style={{ backgroundColor: '#A4663C'}}>
+                             <div></div>
+                         </CTableDataCell>
+                       
+                         <CTableDataCell>1</CTableDataCell>
+                         <CTableDataCell>1</CTableDataCell>
+                         <CTableDataCell>1</CTableDataCell>
+                         <CTableDataCell></CTableDataCell>
+                         <CTableDataCell></CTableDataCell>
+                         <CTableDataCell></CTableDataCell>
+                         <CTableDataCell></CTableDataCell>
+                         <CTableDataCell></CTableDataCell>
+                       </CTableRow>
+                   </CTableBody>
+                 </CTable>
+             </CCol>
           </div>
         </>
       )}
@@ -207,7 +272,7 @@ const Tabela = () => {
         <>
           <h1 className='titulo-tabela'>Turno 2 °</h1>
           <div className="tabela-container " >
-          <CCol>
+          {/* <CCol>
           <CTable className="custom-table  border border-dark" responsive hover>
               
               <CTableHead className='bg-table'  >
@@ -254,7 +319,7 @@ const Tabela = () => {
                      ))}
                    </CTableBody>
                  </CTable>
-             </CCol>
+             </CCol> */}
           </div>
 
         </>

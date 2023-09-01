@@ -4,7 +4,7 @@ import Vector from '../../assets/vector-coffe.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const Login = (props) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -35,7 +35,7 @@ const Login = () => {
       });
 
       setLoginStatus('sucesso');
-
+      props.setIsLoggedIn(true);
       console.log(response)
 
       navigate('/tabela')
@@ -48,15 +48,15 @@ const Login = () => {
 
   
   const handleLogout = () => {
-    // Limpar os dados de autenticação (por exemplo, definir loginStatus como null)
     setLoginStatus(null);
-    // Redirecionar para a página de login (ou página inicial)
+    props.setIsLoggedIn(false);
     navigate('/login');
   };
 
   return (
     <>
       <div className='login'>
+        
         <form className="login-form" onSubmit={onSubmit}>
           <h1>Login</h1>
           <input
@@ -65,6 +65,7 @@ const Login = () => {
             placeholder="Email:"
             value={email}
             onChange={handleInputChange}
+            required
           />
           
           <input
@@ -73,12 +74,20 @@ const Login = () => {
             placeholder='Senha:'
             value={password}
             onChange={handleInputChange}
+            required
           />
 
           <button type="submit">Entrar</button>
-          {loginStatus === 'sucesso' && <p>Login bem-sucedido!</p>}
-          {loginStatus === 'falha' && <p>Falha no login. Verifique suas credenciais.</p>}
-          {loginStatus === 'sucesso' && <button onClick={handleLogout}>Logout</button>}
+          {props.isLoggedIn ? (
+            <>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              {loginStatus === 'sucesso' && <p>Login bem-sucedido!</p>}
+              {loginStatus === 'falha' && <p>Falha no login. Verifique suas credenciais.</p>}
+            </>
+          )}
           <div className='link-cadastro'>
             <p>Não tem Cadastro ?</p>
             <Link to="/cadastro" className='link'><strong>Criar uma Conta</strong></Link>
