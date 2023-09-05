@@ -1,21 +1,22 @@
-import './Navbar.css'
-import Logo from '../../assets/logo-jde1.png';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../../assets/logo-jde1.png';
+import './Navbar.css';
 
-const Navbar = (props) => {
+const Navbar = () => {
+  
+
   return (
-    <nav> 
-     <img src={Logo} alt="jde logo" />
-     <div className='links'>
-     {props.isLoggedIn ? (
-       <Link className='link-login' onClick={() => props.setIsLoggedIn(false)} to="/logout">Logout</Link>
-     ) : (
-       <Link className='link-login' to='/'>Login</Link>
-     )}
-     </div>
-
+    <nav>
+      <img src={Logo} alt="jde logo" />
+      <div className='links'>
+       
+          <Link className='link-login' to='/'>
+            Login
+          </Link>
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

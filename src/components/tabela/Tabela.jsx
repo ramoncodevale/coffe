@@ -1,329 +1,262 @@
 import React, { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow,CTableHeaderCell, CTableBody, CTableDataCell, CCol} from '@coreui/react'
+import { CTable, CTableHead, CTableRow,CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton} from '@coreui/react'
 import './Tabela.css';
 import axios from 'axios';
 import { format } from 'date-fns';
+import FirstShift from '../../components/turnos/FirstShift'
+import SecondShift from '../../components/turnos/SecondShift'
+import ThirdShift from '../../components/turnos/ThirdShift'
 
 const Tabela = () => {
-  // State for form data
+  const [operadores, setOperadores] = useState([]);
+  const [periodo, setPeriodo] = useState([])
+  const [maquinas, setMaquinas] = useState([])
+  const [metaPorHoraSelecionada, setMetaPorHoraSelecionada] = useState(0);
+
+  const [isFirstShiftVisible, setIsFirstShiftVisible] = useState(false);
+const [isSecondShiftVisible, setIsSecondShiftVisible] = useState(false);
+const [isThirdShiftVisible, setIsThirdShiftVisible] = useState(false);
+
+
   const [formData, setFormData] = useState({
-    operador: '',
-    periodo: '',
-    ge: '',
-    metaPorHora: '',
-    planejado: '',
-    produzido: '',
-    desperdiçoEmbalagem: '',
-    desperdiçoCafé: '',
-    qualidade: '',
-    she: '',
+    operadorId: '',
+    periodoId: '',
+    ger: '',
+    maquinaId: '',
+    planejado: ''
 });
 
+const [formTable, setFormTable] = useState({
+  operadorId: '',
+  perda: '',
+  comentario: '',
+  quantidade: '',
+  metaHora: '',
+})
 
-  // State for table data
-  const [data, setData] = useState([]);
+const handleAbrirTurno = async () => {
+  try {
+    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/producao', formData);
+   
+    console.log('Dados enviados com sucesso:', response.data);
+    if (formData.periodoId === "1") {
+      setIsFirstShiftVisible(true);
+      setIsSecondShiftVisible(false);
+      setIsThirdShiftVisible(false);
+    } else if (formData.periodoId === "2") {
+      setIsFirstShiftVisible(false);
+      setIsSecondShiftVisible(true);
+      setIsThirdShiftVisible(false);
+    } else if (formData.periodoId === "3") {
+      setIsFirstShiftVisible(false);
+      setIsSecondShiftVisible(false);
+      setIsThirdShiftVisible(true);
+    } else {
+      // Caso nenhum período seja selecionado, esconda todas as tabelas
+      setIsFirstShiftVisible(false);
+      setIsSecondShiftVisible(false);
+      setIsThirdShiftVisible(false);
+    }
 
-  // Fetch data from the API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://52.67.201.79:8080/api/turno', {
-          headers: {
-            'Content-Security-Policy': 'upgrade-insecure-requests', // Configuração de política de segurança
+  } catch (error) {
+    console.error('Ocorreu um erro ao enviar os dados:', error);
+  }
+};
 
-          }
-        });
-        setData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+const handleSaveTabela = async () => {
+  try {
+    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/tabela', formTable);
+   
+    console.log('Dados enviados com sucesso:', response.data);
+    
 
-    fetchData();
-  }, []);
-  
+  } catch (error) {
+    console.error('Ocorreu um erro ao enviar os dados:', error);
+  }
+};
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default page reload
-    // Validate and send form data to the API here
-    // You can use formData to send the data to your API endpoint
+
+useEffect(() => {
+  const fetchOperadores = async () => {
+    try {
+      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/operador');
+      setOperadores(response.data);
+    } catch (error) {
+      console.error('Ocorreu um erro ao buscar os operadores:', error);
+    }
   };
+
+  fetchOperadores();
+}, []);
+
+useEffect(() => {
+  const fetchPeriodo = async () => {
+    try {
+      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/periodo');
+      setPeriodo(response.data);
+    } catch (error) {
+      console.error('Ocorreu um erro ao buscar os periodo:', error);
+    }
+  };
+
+  fetchPeriodo();
+}, []);
+
+useEffect(() => {
+  const fetchMaquinas = async () => {
+    try {
+      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/maquina');
+      setMaquinas(response.data);
+    } catch (error) {
+      console.error('Ocorreu um erro ao buscar as maquinas:', error);
+    }
+  };
+
+  fetchMaquinas();
+}, []);
+
+
+const handleFecharTurno = () => {
+  setIsFirstShiftVisible(false);
+  setIsSecondShiftVisible(false);
+  setIsThirdShiftVisible(false);
+};
+
 
   const today = new Date();
   const formattedDate = format(today, 'dd/MM/yyyy');
 
-  const [turnoAberto, setTurnoAberto] = useState(null); // Inicialmente nenhum turno está aberto
-
-  const abrirTurno = (numeroTurno) => {
-    setTurnoAberto(numeroTurno);
-  };
-
-
 
   return (
     <>
-      <form className="input-cadastro" onSubmit={handleSubmit}>
-        <div className='input-container'>
-          <label>Data</label>
-          <input
+    <section className='secao-tabela'>
+     <CTable className="mb-0 border border-dark  mt-3 tabela" hover responsive>
+     <CTableHead >
+          <CTableRow>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Data</CTableHeaderCell>
+            <CTableHeaderCell className="text-center " style={{ backgroundColor: '#A4663C'}} >Operador</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>GE %</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Periodo</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Maquinas</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Meta Por Hora</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Planejado</CTableHeaderCell>
+            <CTableDataCell className="text-center" style={{ backgroundColor: '#A4663C'}}>
+              Ação
+          
+        </CTableDataCell>
+          </CTableRow>
+        </CTableHead>
+        <CTableBody>
+          <CTableRow>
+            <CTableDataCell className="text-center">
+            <input
             type="text"
             placeholder="Data"
             name="data"
             value={formattedDate}
             readOnly // Make the date field read-only
           />
-        </div>
-
-        <div className='input-container'>
-          <label>Operador</label>
-          <input
-            type="text"
-            placeholder="Operador"
-            name="operador"
-            value={formData.operador}
-            onChange={(e) => setFormData({ ...formData, operador: e.target.value })}
-            readOnly
-          />
-        </div>
-
-        <div className='input-container'>
-          <label>Período</label>
-          <input
-            type="text"
-            placeholder="Período"
-            name="periodo"
-            value={formData.periodo}
-            onChange={(e) => setFormData({ ...formData, periodo: e.target.value })}
-          />
-        </div>
-
-        <div className='input-container'>
-          <label>Máquina</label>
-          <input
-            type="text"
-            placeholder="Máquina" // Corrected placeholder text
-            name="maquina"
-            value={formData.maquina}
-            onChange={(e) => setFormData({ ...formData, maquina: e.target.value })}
-          />
-        </div>
-
-        <div className='input-container'>
-          <label>Ge %</label>
-          <input
+            </CTableDataCell>
+            <CTableDataCell className="text-center">
+  <select
+    name="operador"
+    id="operador"
+    value={formData.operadorId} // Altere para formData.operadorId
+    onChange={(e) => setFormData({ ...formData, operadorId: e.target.value })} // Altere para operadorId
+  >
+    <option value="">Selecione um operador</option>
+    {operadores.map((operador) => (
+      <option key={operador.id} value={operador.id}>
+        {operador.nome}
+      </option>
+    ))}
+  </select>
+</CTableDataCell>
+            <CTableDataCell  className="text-center">
+            <input
             type="text"
             placeholder="GE%"
-            name="ge"
-            value={formData.ge}
-            onChange={(e) => setFormData({ ...formData, ge: e.target.value })}
+            name="ger"
+            value={formData.ger}
+            onChange={(e) => setFormData({ ...formData, ger: e.target.value })}
           />
-        </div>
+            </CTableDataCell>
 
-        <div className='input-container'>
-          <label>Meta por Hora</label>
-          <input
-            type="text"
-            placeholder="Meta por hora"
-            name="metaPorHora"
-            value={formData.metaPorHora}
-            onChange={(e) => setFormData({ ...formData, metaPorHora: e.target.value })}
-          />
-        </div>
+            <CTableDataCell className="text-center">
+  <select
+    name="periodo"
+    id="periodo"
+    value={formData.periodoId} // Altere para formData.periodoId
+    onChange={(e) => setFormData({ ...formData, periodoId: e.target.value })} // Altere para periodoId
+  >
+    <option value="">Selecione um Turno</option>
+    {periodo.map((periodo) => (
+      <option key={periodo.id} value={periodo.id}>
+        {periodo.turno}
+      </option>
+    ))}
+  </select>
+</CTableDataCell>
+<CTableDataCell className="text-center">
+  <select
+    name="maquinas"
+    id="maquinas"
+    value={formData.maquinaId} // Altere para formData.maquinaId
+    onChange={(e) => {
+      const selectedMachineId = e.target.value;
+      setFormData({ ...formData, maquinaId: selectedMachineId }); // Altere para maquinaId
+      // Encontre a máquina selecionada com base no ID
+      const selectedMachine = maquinas.find((machine) => machine.id === parseInt(selectedMachineId));
+      if (selectedMachine) {
+        setMetaPorHoraSelecionada(selectedMachine.metaHora);
+      } else {
+        setMetaPorHoraSelecionada(0); // Padrão para 0 se nenhuma máquina for selecionada
+      }
+    }}
+  >
+    <option value="">Selecione uma Máquina</option>
+    {maquinas.map((maquina) => (
+      <option key={maquina.id} value={maquina.id}>
+        {maquina.nome}
+      </option>
+    ))}
+  </select>
+</CTableDataCell>
 
-        <div className='input-container'>
-          <label>Planejado</label>
-          <input
+            <CTableDataCell  className="text-center">
+            <input
+    type="text"
+    placeholder="Meta por hora"
+    name="metaPorHora"
+    value={metaPorHoraSelecionada}
+    readOnly // Certifique-se de que este campo seja apenas leitura
+  />
+            </CTableDataCell>
+            <CTableDataCell  className="text-center">
+            <input
             type="text"
             placeholder="Planejado"
             name="planejado"
             value={formData.planejado}
             onChange={(e) => setFormData({ ...formData, planejado: e.target.value })}
           />
-        </div>
-
-        
-        <div className='input-container'>
-            <label>Produzido
-            </label>
-                <input
-                    type="text"
-                    placeholder="Produzido"
-                    name="produzido"
-                    value={formData.produzido}
-                    onChange={(e) => setFormData({ ...formData, produzido: e.target.value })}
-                />
-              </div>
-
-              <div className='input-container'>
-            <label>Desp.café
-            </label>
-                <input
-                    type="text"
-                    placeholder="desp café"
-                    name="desperdiçoCafé"
-                    value={formData.desperdiçoCafé}
-                    onChange={(e) => setFormData({ ...formData, desperdiçoCafé: e.target.value })}
-                />
-              </div>
-
-              <div className='input-container'>
-            <label>Desp.Embalagem
-            </label>
-                <input
-                    type="text"
-                    placeholder="desp embalagem"
-                    name="desperdiçoEmbalagem"
-                    value={formData.desperdiçoEmbalagem}
-                    onChange={(e) => setFormData({ ...formData, desperdiçoEmbalagem: e.target.value })}
-                />
-              </div>
-
-              <div className='input-container'>
-            <label>Qualidade
-            </label>
-                <input
-                    type="text"
-                    placeholder="qualidade"
-                    name="qualidade"
-                    value={formData.qualidade}
-                    onChange={(e) => setFormData({ ...formData, qualidade: e.target.value })}
-                />
-              </div>
-
-              
-              <div className='input-container'>
-            <label>she
-            </label>
-                <input
-                    type="text"
-                    placeholder="she"
-                    name="she"
-                    value={formData.she}
-                    onChange={(e) => setFormData({ ...formData, she: e.target.value })}
-                />
-              </div>
-
-        <button type='submit'>Salvar Alteração</button>
-
-        <button type="button" style={{ marginTop: '10px' }} onClick={() => abrirTurno(1)}>
-          Abrir Turno 1
-        </button>
-        <button type="button" style={{ marginTop: '10px' }} onClick={() => abrirTurno(2)}>
-          Abrir Turno 2
-        </button>
-      </form>
-
-      {turnoAberto === 1 && (
-        <>
-          <h1 className='titulo-tabela'>CHECAR (check)</h1>
-          <h1 className='titulo-tabela'>Turno 1 °</h1>
-          <div className='tabela-container'>
-          <CCol>
-          <CTable className="custom-table  border border-dark" responsive hover>
-              
-              <CTableHead className='bg-table'  >
-         <CTableRow>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
-         </CTableRow>
-       </CTableHead>
-                   <CTableBody>
-                       <CTableRow >
-                         <CTableDataCell className='horario'
-                         style={{ backgroundColor: '#A4663C'}}>
-                             <div></div>
-                         </CTableDataCell>
-                       
-                         <CTableDataCell>1</CTableDataCell>
-                         <CTableDataCell>1</CTableDataCell>
-                         <CTableDataCell>1</CTableDataCell>
-                         <CTableDataCell></CTableDataCell>
-                         <CTableDataCell></CTableDataCell>
-                         <CTableDataCell></CTableDataCell>
-                         <CTableDataCell></CTableDataCell>
-                         <CTableDataCell></CTableDataCell>
-                       </CTableRow>
-                   </CTableBody>
-                 </CTable>
-             </CCol>
-          </div>
-        </>
-      )}
+            </CTableDataCell>
+            <CTableDataCell>
+            <CButton style={{ backgroundColor: "#221518", border: 'none' }} onClick={handleAbrirTurno}>
+          Abrir Turno
+        </CButton>
+            </CTableDataCell>
+          </CTableRow>
+        </CTableBody>
+      </CTable>
 
 
-      {turnoAberto === 2 && (
-        <>
-          <h1 className='titulo-tabela'>Turno 2 °</h1>
-          <div className="tabela-container " >
-          {/* <CCol>
-          <CTable className="custom-table  border border-dark" responsive hover>
-              
-              <CTableHead className='bg-table'  >
-         <CTableRow>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>TURNO</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>META POR HORA </CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>PRODUZIDO</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>QUALIDADE</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>SHE</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>DESP. EMBALAGEM</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>DESP. CAFÉ</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>MÁQUINA</CTableHeaderCell>
-           <CTableHeaderCell scope="col"
-           style={{ backgroundColor: '#A4663C'}}>OPERADOR</CTableHeaderCell>
-         </CTableRow>
-       </CTableHead>
-                   <CTableBody>
-                     {data.map(item => (
-                       <CTableRow key={item.id}>
-                         <CTableDataCell className='horario'
-                         style={{ backgroundColor: '#A4663C'}}>
-                           {item.producoes.map((producao, index) => (
-                             <div key={index}>{producao.horario.faixa}</div>
-                           ))}
-                         </CTableDataCell>
-                       
-                         <CTableDataCell>{item.maquina.metaHora}</CTableDataCell>
-                         <CTableDataCell>{item.produzido}</CTableDataCell>
-                         <CTableDataCell>{item.qualidade ? 'OK' : 'NOK'}</CTableDataCell>
-                         <CTableDataCell>{item.she ? 'OK' : 'NOK'}</CTableDataCell>
-                         <CTableDataCell>{item.desperdicioEmbalagem}</CTableDataCell>
-                         <CTableDataCell>{item.desperdicioCafe}</CTableDataCell>
-                         <CTableDataCell>{item.maquina.nome}</CTableDataCell>
-                         <CTableDataCell>{`${item.operador.nome} ${item.operador.sobreNome}`}</CTableDataCell>
-                       </CTableRow>
-                     ))}
-                   </CTableBody>
-                 </CTable>
-             </CCol> */}
-          </div>
+      {isFirstShiftVisible && <FirstShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} formTable={formTable} setFormTable={setFormTable} />}
+{isSecondShiftVisible && <SecondShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} />}
+{isThirdShiftVisible && <ThirdShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} />}
 
-        </>
-      )}
+     
+    </section>
     </>
   );
 }

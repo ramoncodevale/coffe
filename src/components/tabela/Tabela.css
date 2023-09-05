@@ -1,25 +1,49 @@
-.input-cadastro {
+.secao-tabela {
+  height: 100vh;
+}
+
+.tabela {
+  margin-top: 20px;
+}
+
+.cadastro-turno {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-secundary);
   margin-top: 50px;
-}
-
-.input-container {
-  /* Your existing styles */
-}
-
-label {
-  /* Your existing styles */
+  justify-content: center;
+  width: 100%;
 }
 
 input[type="text"] {
-  /* Your existing styles */
+  height: 40px;
+  width: 150px;
 }
 
-button {
-  /* Your existing styles */
+select  {
+  height: 40px;
+  width: 150px;
 }
 
-button:hover {
-  /* Your existing styles */
+.cabeçalho-turno {
+  background-color: var(--background-secundary);
+  display: flex;
+  color: #000;
+}
+
+.horarios  {
+  background-color: var(--background-secundary);
+  color: #000;
+}
+
+.btn-turno {
+  background-color: var(--background-primary);
+  height: 40px;
+  width: 150px;
+}
+
+.btn-turno:hover {
+  background-color: #221514;
 }
 
 .tabela-container {
@@ -40,39 +64,4 @@ table {
   text-align: center;
   color: #fff;
   margin-top: 50px;
-}
-
-.horario {
-  /* Your existing styles */
-}
-
-thead th {
-  background-color: var(--background-secundary);
-  padding: 10px;
-  text-align: left;
-}
-
-td {
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.bg-table {
-  background-color: var(--background-primary);
-}
-
-@media (max-width: 600px) {
-  table {
-      font-size: 12px;
-  }
-
-  th,
-  td {
-      padding: 5px;
-  }
 }

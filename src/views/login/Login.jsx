@@ -10,8 +10,7 @@ const Login = (props) => {
     password: '',
   });
 
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
 
   const [loginStatus, setLoginStatus] = useState(null);
 
@@ -34,43 +33,45 @@ const Login = (props) => {
         password: formData.password,
       });
 
-      setLoginStatus('sucesso');
-      props.setIsLoggedIn(true);
-      console.log(response)
+      const { token } = response.data; 
 
-      navigate('/tabela')
+      localStorage.setItem('jwtToken', token); // Armazenar o token no localStorage
+
+      setLoginStatus('sucesso');
+      console.log(response);
+
+      navigate('/tabela');
 
     } catch (error) {
       setLoginStatus('falha');
       console.log(error);
     }
-  }
+  };
 
-  
   const handleLogout = () => {
     setLoginStatus(null);
-    props.setIsLoggedIn(false);
+    localStorage.removeItem('jwtToken'); // Remover o token JWT ao fazer logout
     navigate('/login');
   };
 
   return (
     <>
       <div className='login'>
-        
+
         <form className="login-form" onSubmit={onSubmit}>
           <h1>Login</h1>
           <input
             type="email"
-            name="email" 
+            name="email"
             placeholder="Email:"
             value={email}
             onChange={handleInputChange}
             required
           />
-          
+
           <input
             type="password"
-            name="password" 
+            name="password"
             placeholder='Senha:'
             value={password}
             onChange={handleInputChange}

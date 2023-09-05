@@ -9,16 +9,25 @@ import Graficos from './views/graficos/Graficos';
 import Form from './components/form/Form';
 import Tabela from './components/tabela/Tabela';
 import Logout from './components/logout/Logout';
+import axios from 'axios';
+
+axios.interceptors.request.use((config) => {
+  const jwtToken = localStorage.getItem('jwtToken');
+  if (jwtToken) {
+    config.headers.Authorization = `Bearer ${jwtToken}`;
+  }
+  return config;
+});
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] =useState(false);
+  // const [isLoggedIn, setIsLoggedIn] =useState(false);
   return (
      <>
      {/* <Login /> */}
      <BrowserRouter>
-     <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  />
+     <Navbar  />
         <Routes>
-          <Route path="/" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}  />
+          <Route path="/" element={<Login  />}  />
           <Route path="/logout" element={<Logout />}  />
           <Route path="/cadastro" element={<Cadastro/>} />
           <Route path="/registro" element={<CadastrarRegistro/>} />
