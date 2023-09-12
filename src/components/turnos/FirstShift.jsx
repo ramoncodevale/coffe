@@ -146,6 +146,7 @@ const FirstShift = ({ handleFecharTurno }) => {
       )}
 
       <CTable className="mb-0 border border-dark mt-3" hover responsive>
+      {dadosSalvos && (
       <CTableHead>
         <CTableRow>
           <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>1 ° Turno</CTableHeaderCell>
@@ -154,7 +155,7 @@ const FirstShift = ({ handleFecharTurno }) => {
           <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Comentários</CTableHeaderCell>
         </CTableRow>
       </CTableHead>
-
+      )}
       <CTableBody>
   {turnoRegistros.map((registro, index) => {
     // Encontre o objeto de horário correspondente com base no id do horário

@@ -81,19 +81,7 @@ const handleAbrirTurno = async () => {
 
   await enviarDadosDoTurno(requestData);
 
-  // Limpar o formulário após o envio
-  setFormData({
-    operadorId: '',
-    data: formattedDate,
-    periodoId: '',
-    quantidade: '',
-    comentario: '',
-    perda: '',
-    ger: '',
-    maquinaId: '',
-    planejado: '',
-    horario: '',
-  });
+
 
 
 }
