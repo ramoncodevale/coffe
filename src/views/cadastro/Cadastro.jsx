@@ -103,7 +103,7 @@ const Cadastro = () => {
             name="name"
             id="name"
             placeholder='Nome:'
-            value={formValues.nome}
+            value={formValues.name}
             onChange={handleInputChange}
           />
 
@@ -118,7 +118,7 @@ const Cadastro = () => {
             name="surname"
             id="surname"
             placeholder='Sobrenome:'
-            value={formValues.sobreNome}
+            value={formValues.surname}
             onChange={handleInputChange}
           />
 

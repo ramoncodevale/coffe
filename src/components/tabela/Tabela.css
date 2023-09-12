@@ -15,7 +15,7 @@
   width: 100%;
 }
 
-input[type="text"] {
+.input {
   height: 40px;
   width: 150px;
 }

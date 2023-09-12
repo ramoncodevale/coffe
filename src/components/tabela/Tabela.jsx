@@ -13,68 +13,90 @@ const Tabela = () => {
   const [maquinas, setMaquinas] = useState([])
   const [metaPorHoraSelecionada, setMetaPorHoraSelecionada] = useState(0);
 
+
   const [isFirstShiftVisible, setIsFirstShiftVisible] = useState(false);
 const [isSecondShiftVisible, setIsSecondShiftVisible] = useState(false);
 const [isThirdShiftVisible, setIsThirdShiftVisible] = useState(false);
 
 
+
+const today = new Date();
+const formattedDate = format(today, 'dd/MM/yyyy');
+
+
   const [formData, setFormData] = useState({
     operadorId: '',
+    data: formattedDate,
     periodoId: '',
+    quantidade: '',
+    comentario: '',
+    perda:'',
     ger: '',
     maquinaId: '',
-    planejado: ''
+    planejado: '',
+    horario: '',
 });
 
-const [formTable, setFormTable] = useState({
-  operadorId: '',
-  perda: '',
-  comentario: '',
-  quantidade: '',
-  metaHora: '',
-})
+
+const enviarDadosDoTurno = async (requestData) => {
+  try {
+    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/producao', requestData);
+    console.log('Dados do turno enviados com sucesso:', response.data);
+  } catch (error) {
+    console.error('Ocorreu um erro ao enviar os dados do turno:', error);
+  }
+};
+
+
 
 const handleAbrirTurno = async () => {
-  try {
-    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/producao', formData);
-   
-    console.log('Dados enviados com sucesso:', response.data);
-    if (formData.periodoId === "1") {
-      setIsFirstShiftVisible(true);
-      setIsSecondShiftVisible(false);
-      setIsThirdShiftVisible(false);
-    } else if (formData.periodoId === "2") {
-      setIsFirstShiftVisible(false);
-      setIsSecondShiftVisible(true);
-      setIsThirdShiftVisible(false);
-    } else if (formData.periodoId === "3") {
-      setIsFirstShiftVisible(false);
-      setIsSecondShiftVisible(false);
-      setIsThirdShiftVisible(true);
-    } else {
-      // Caso nenhum período seja selecionado, esconda todas as tabelas
-      setIsFirstShiftVisible(false);
-      setIsSecondShiftVisible(false);
-      setIsThirdShiftVisible(false);
-    }
-
-  } catch (error) {
-    console.error('Ocorreu um erro ao enviar os dados:', error);
+  
+  if (formData.periodoId === "1") {
+    setIsFirstShiftVisible(true);
+    setIsSecondShiftVisible(false);
+    setIsThirdShiftVisible(false);
+  } else if (formData.periodoId === "2") {
+    setIsFirstShiftVisible(false);
+    setIsSecondShiftVisible(true);
+    setIsThirdShiftVisible(false);
+  } else if (formData.periodoId === "3") {
+    setIsFirstShiftVisible(false);
+    setIsSecondShiftVisible(false);
+    setIsThirdShiftVisible(true);
+  } else {
+    // Caso nenhum período seja selecionado, esconda todas as tabelas
+    setIsFirstShiftVisible(false);
+    setIsSecondShiftVisible(false);
+    setIsThirdShiftVisible(false);
   }
-};
 
-const handleSaveTabela = async () => {
-  try {
-    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/tabela', formTable);
-   
-    console.log('Dados enviados com sucesso:', response.data);
-    
+  const requestData = {
+    operadorId: formData.operadorId,
+    data: formattedDate,
+    periodoId: formData.periodoId,
+    ger: formData.ger,
+    maquinaId: formData.maquinaId,
+    planejado: formData.planejado,
+  };
 
-  } catch (error) {
-    console.error('Ocorreu um erro ao enviar os dados:', error);
-  }
-};
+  await enviarDadosDoTurno(requestData);
 
+  // Limpar o formulário após o envio
+  setFormData({
+    operadorId: '',
+    data: formattedDate,
+    periodoId: '',
+    quantidade: '',
+    comentario: '',
+    perda: '',
+    ger: '',
+    maquinaId: '',
+    planejado: '',
+    horario: '',
+  });
+
+
+}
 
 useEffect(() => {
   const fetchOperadores = async () => {
@@ -123,9 +145,6 @@ const handleFecharTurno = () => {
 };
 
 
-  const today = new Date();
-  const formattedDate = format(today, 'dd/MM/yyyy');
-
 
   return (
     <>
@@ -133,17 +152,16 @@ const handleFecharTurno = () => {
      <CTable className="mb-0 border border-dark  mt-3 tabela" hover responsive>
      <CTableHead >
           <CTableRow>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Data</CTableHeaderCell>
-            <CTableHeaderCell className="text-center " style={{ backgroundColor: '#A4663C'}} >Operador</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>GE %</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Periodo</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Maquinas</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Meta Por Hora</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C'}}>Planejado</CTableHeaderCell>
-            <CTableDataCell className="text-center" style={{ backgroundColor: '#A4663C'}}>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Data</CTableHeaderCell>
+            <CTableHeaderCell className="text-center "style={{ backgroundColor: '#A4663C', color: '#221518'}} >Operador</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>GE %</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Periodo</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Maquinas</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Meta Por Hora</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Planejado</CTableHeaderCell>
+            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>
               Ação
-          
-        </CTableDataCell>
+        </CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -155,6 +173,7 @@ const handleFecharTurno = () => {
             name="data"
             value={formattedDate}
             readOnly // Make the date field read-only
+            className="input"
           />
             </CTableDataCell>
             <CTableDataCell className="text-center">
@@ -178,6 +197,7 @@ const handleFecharTurno = () => {
             placeholder="GE%"
             name="ger"
             value={formData.ger}
+            className='input'
             onChange={(e) => setFormData({ ...formData, ger: e.target.value })}
           />
             </CTableDataCell>
@@ -229,11 +249,14 @@ const handleFecharTurno = () => {
     placeholder="Meta por hora"
     name="metaPorHora"
     value={metaPorHoraSelecionada}
+    className='input'
+
     readOnly // Certifique-se de que este campo seja apenas leitura
   />
             </CTableDataCell>
             <CTableDataCell  className="text-center">
             <input
+            className='input'
             type="text"
             placeholder="Planejado"
             name="planejado"
@@ -251,9 +274,9 @@ const handleFecharTurno = () => {
       </CTable>
 
 
-      {isFirstShiftVisible && <FirstShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} formTable={formTable} setFormTable={setFormTable} />}
-{isSecondShiftVisible && <SecondShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} />}
-{isThirdShiftVisible && <ThirdShift handleFecharTurno={handleFecharTurno} handleSaveTabela={handleSaveTabela} />}
+      {isFirstShiftVisible && <FirstShift handleFecharTurno={handleFecharTurno}  formData={formData} setFormData={setFormData} />}
+{isSecondShiftVisible && <SecondShift handleFecharTurno={handleFecharTurno}  />}
+{isThirdShiftVisible && <ThirdShift handleFecharTurno={handleFecharTurno}  />}
 
      
     </section>
