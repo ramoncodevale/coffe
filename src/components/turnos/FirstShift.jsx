@@ -3,6 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import "./shift.css"
 
 const FirstShift = ({  operadorId }) => {
   const [time, setTime] = useState([]);
@@ -39,7 +40,7 @@ const FirstShift = ({  operadorId }) => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno/1');
+        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno');
         setProducoes(response.data.producoes);
         console.log(response.data.producoes)
       } catch (error) {
@@ -148,45 +149,28 @@ const FirstShift = ({  operadorId }) => {
 
   return (
     <section className='secao-tabela'>
-        <CTable style={{ marginTop: '20px'}} hover responsive>
-        <CTableHead >
-          <CTableRow>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Data</CTableHeaderCell>
-            <CTableHeaderCell className="text-center "style={{ backgroundColor: '#A4663C', color: '#221518'}} >Operador</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>GE %</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Maquinas</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Meta Por Hora</CTableHeaderCell>
-            <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Planejado</CTableHeaderCell>
-          
-          </CTableRow>
-        </CTableHead>
-      {producoes.map((item) => (
-        <CTableBody key={item.id}>
-          <CTableRow>
-          <CTableDataCell className="text-center">
-          {format(new Date(item.data), 'dd/MM/yyyy')}
+     <div style={{ marginTop: '20px' }}>
+  <div style={{ backgroundColor: '#A4663C', color: '#221518', display: 'flex' }}>
+    <div className="text-center" style={{ flex: 1 }}><strong>Data</strong></div>
+    <div className="text-center" style={{ flex: 1 }}><strong>Operador</strong></div>
+    <div className="text-center" style={{ flex: 1 }}><strong>GE %</strong></div>
+    <div className="text-center" style={{ flex: 1 }}><strong>Maquinas</strong></div>
+    <div className="text-center" style={{ flex: 1 }}><strong>Meta Por Hora</strong></div>
+    <div className="text-center" style={{ flex: 1 }}><strong>Planejado</strong></div>
+  </div>
+  {producoes.map((item) => (
+    <div key={item.id} style={{ display: 'flex', borderBottom: '1px solid #ccc', backgroundColor: "#fff" }}>
+      <div className="text-center" style={{ flex: 1 }}>{format(new Date(item.data), 'dd/MM/yyyy')}</div>
+      <div className="text-center" style={{ flex: 1 }}>{item.operadore.nome}</div>
+      <div className="text-center" style={{ flex: 1 }}>{item.ger}</div>
+      <div className="text-center" style={{ flex: 1 }}>{item.maquina.nome}</div>
+      <div className="text-center" style={{ flex: 1 }}>{item.maquina.metaHora}</div>
+      <div className="text-center" style={{ flex: 1 }}>{item.planejado}</div>
+    </div>
+  ))}
+</div>
 
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {item.operadore.nome}
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {item.ger}
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {item.maquina.nome}
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {item.maquina.metaHora}
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {item.planejado}
-          </CTableDataCell>
-          </CTableRow>
-        </CTableBody>
-      ))}
-      </CTable>
-      <CTable className="mb-0 border border-dark mt-3" hover responsive>
+      <CTable className=" border border-dark" hover responsive>
         {!allRowsFilled && (
         <CTableHead>
           <CTableRow>
@@ -252,7 +236,7 @@ const FirstShift = ({  operadorId }) => {
       </CTable>
  
 
-      <CTable className="mb-0 border border-dark mt-3" hover responsive>
+      <CTable className=" border border-dark " hover responsive>
       {turnoAberto && dadosSalvos && (
       <CTableHead>
         <CTableRow>
@@ -304,9 +288,9 @@ const FirstShift = ({  operadorId }) => {
     </CTableRow>
     </CTableBody>
     <CTableDataCell>
-    <button onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar'>
+    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#A4663C", border: "none"}}>
   Fechar Turno 
-</button>
+</CButton>
 
     </CTableDataCell>
   </CTable>

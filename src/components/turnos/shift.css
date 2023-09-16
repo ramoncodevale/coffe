@@ -1,0 +1,93 @@
+/* Estilos gerais para tabelas */
+/* .secao-tabela {
+  overflow-x: auto;
+} */
+
+/* Estilos para tabelas grandes */
+.CTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Estilos para cabeçalhos de tabela */
+.CTableHead {
+  background-color: #A4663C;
+  color: #221518;
+}
+
+.CTableHeaderCell {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilos para linhas e células de tabela */
+.CTableBody {
+  background-color: white;
+}
+
+.CTableRow {
+  border-bottom: 1px solid #ccc;
+}
+
+.CTableDataCell {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Estilos para formulários dentro das tabelas */
+.input-table {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Estilos para botões de ação */
+.btn-turno {
+  background-color: #A4663C;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-turno-fechar {
+  background-color: #A4663C;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilos para dispositivos móveis e tablets */
+@media (max-width: 768px) {
+  .secao-tabela {
+    overflow-x: auto;
+  }
+
+  .CTableHeaderCell {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .CTableDataCell {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .input-table {
+    font-size: 14px;
+  }
+
+  .btn-turno {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  .btn-turno-fechar {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}

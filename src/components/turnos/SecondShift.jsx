@@ -3,6 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import "./shift.css"
 
 const SecondShift = ({  operadorId }) => {
   const [time, setTime] = useState([]);
@@ -186,7 +187,7 @@ const SecondShift = ({  operadorId }) => {
         </CTableBody>
       ))}
       </CTable>
-      <CTable className="mb-0 border border-dark mt-3" hover responsive>
+      <CTable className="border border-dark" hover responsive>
         {!allRowsFilled && (
         <CTableHead>
           <CTableRow>
@@ -252,7 +253,7 @@ const SecondShift = ({  operadorId }) => {
       </CTable>
  
 
-      <CTable className="mb-0 border border-dark mt-3" hover responsive>
+      <CTable className=" border border-dark" hover responsive>
       {turnoAberto && dadosSalvos && (
       <CTableHead>
         <CTableRow>
@@ -304,9 +305,9 @@ const SecondShift = ({  operadorId }) => {
     </CTableRow>
     </CTableBody>
     <CTableDataCell>
-    <button onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar'>
+    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#A4663C", border: 'none'}}>
   Fechar Turno 
-</button>
+</CButton>
 
     </CTableDataCell>
   </CTable>
