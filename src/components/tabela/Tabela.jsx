@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow,CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton} from '@coreui/react'
 import './Tabela.css';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { formatISO9075 } from 'date-fns';
 import FirstShift from '../../components/turnos/FirstShift'
 import SecondShift from '../../components/turnos/SecondShift'
 import ThirdShift from '../../components/turnos/ThirdShift'
+
 
 const Tabela = () => {
   const [operadores, setOperadores] = useState([]);
@@ -17,11 +20,13 @@ const Tabela = () => {
   const [isFirstShiftVisible, setIsFirstShiftVisible] = useState(false);
 const [isSecondShiftVisible, setIsSecondShiftVisible] = useState(false);
 const [isThirdShiftVisible, setIsThirdShiftVisible] = useState(false);
+const [isTurnoAberto, setIsTurnoAberto] = useState(false);
 
 
 
 const today = new Date();
 const formattedDate = format(today, 'dd/MM/yyyy');
+const navigate = useNavigate()
 
 
   const [formData, setFormData] = useState({
@@ -48,43 +53,30 @@ const enviarDadosDoTurno = async (requestData) => {
 };
 
 
-
-const handleAbrirTurno = async () => {
-  
+const handleAbrirTurno = () => {
   if (formData.periodoId === "1") {
-    setIsFirstShiftVisible(true);
-    setIsSecondShiftVisible(false);
-    setIsThirdShiftVisible(false);
+   navigate("/turno/1")
   } else if (formData.periodoId === "2") {
-    setIsFirstShiftVisible(false);
-    setIsSecondShiftVisible(true);
-    setIsThirdShiftVisible(false);
+   navigate("/turno/2")
   } else if (formData.periodoId === "3") {
-    setIsFirstShiftVisible(false);
-    setIsSecondShiftVisible(false);
-    setIsThirdShiftVisible(true);
-  } else {
-    // Caso nenhum período seja selecionado, esconda todas as tabelas
-    setIsFirstShiftVisible(false);
-    setIsSecondShiftVisible(false);
-    setIsThirdShiftVisible(false);
+   navigate("/turno/3")
   }
+  setIsTurnoAberto(true);
 
   const requestData = {
     operadorId: formData.operadorId,
-    data: formattedDate,
+    data: formatISO9075(today),
     periodoId: formData.periodoId,
     ger: formData.ger,
     maquinaId: formData.maquinaId,
     planejado: formData.planejado,
   };
+  console.log(requestData.data);
 
-  await enviarDadosDoTurno(requestData);
+  enviarDadosDoTurno(requestData);
+};
 
 
-
-
-}
 
 useEffect(() => {
   const fetchOperadores = async () => {
@@ -261,10 +253,11 @@ const handleFecharTurno = () => {
         </CTableBody>
       </CTable>
 
-
-      {isFirstShiftVisible && <FirstShift handleFecharTurno={handleFecharTurno}  formData={formData} setFormData={setFormData} />}
+{/* 
+      {isFirstShiftVisible && <FirstShift handleFecharTurno={handleFecharTurno} 
+      operadorId  formData={formData} setFormData={setFormData} />}
 {isSecondShiftVisible && <SecondShift handleFecharTurno={handleFecharTurno}  />}
-{isThirdShiftVisible && <ThirdShift handleFecharTurno={handleFecharTurno}  />}
+{isThirdShiftVisible && <ThirdShift handleFecharTurno={handleFecharTurno}  />} */}
 
      
     </section>

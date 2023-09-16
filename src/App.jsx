@@ -10,8 +10,9 @@ import Form from './components/form/Form';
 import Tabela from './components/tabela/Tabela';
 import Logout from './components/logout/Logout';
 import axios from 'axios';
-import FirstShift from './views/turnos/FirstShift';
-import SecondShift from './views/turnos/SecondShift';
+import FirstShift from "./components/turnos/FirstShift"
+import SecondShift from "./components/turnos/SecondShift"
+import ThirdShift from "./components/turnos/ThirdShift"
 
 axios.interceptors.request.use((config) => {
   const jwtToken = localStorage.getItem('jwtToken');
@@ -38,6 +39,7 @@ const App = () => {
           <Route path='/form' element={<Form />} />
           <Route path='/turno/1' element={<FirstShift />} />
           <Route path='/turno/2' element={<SecondShift />} />
+          <Route path='/turno/3' element={<ThirdShift />} />
 
         </Routes>
         <Footer />

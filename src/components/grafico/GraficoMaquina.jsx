@@ -7,18 +7,23 @@ import axios from 'axios';
 
 const GraficoMaquina = () => {
   const [data, setData] = useState([])
+  const [producoes, setProducoes] = useState([])
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://52.67.201.79:8080/api/maquina', {
+        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno/1', {
           headers: {
             "Content-Type": 'application/json',
           }
         })
-        setData(response.data)
-        console.log(response.data)
+        setData(response.data.producoesRegistro)
+        console.log(response.data.producoesRegistro)
+
+        
+        setProducoes(response.producoes.producoes)
+        console.log(response.producoes.producoes)
 
       } catch (error) {
         console.log(error)
@@ -29,25 +34,19 @@ const GraficoMaquina = () => {
   }, [])
 
 
+  const COLORS = ['green', 'red'];
 
+  // Calculate the sum of quantities
+  const somaQuantidade = data.reduce((total, item) => total + item.quantidade, 0);
 
-
-  const COLORS = [
-    "yellow",
-    "#0F084B",
-    "#DE1A1A",
-    "pink"
-    // ... (add more colors if needed)
+  // Create chart data with only the sum
+  const chartData = [
+    {
+      name: somaQuantidade,
+      y: somaQuantidade,
+      color: COLORS[0], // You can set the color as needed
+    },
   ];
-
-
-  const chartData = data.map((item, index) => ({
-    ...item,
-    id: item.id,
-    name: item.nome,
-    y: item.metaHora,
-    color: COLORS[index % COLORS.length],
-  }));
 
   const options = {
     chart: {
@@ -60,7 +59,7 @@ const GraficoMaquina = () => {
     },
     tooltip: {
       formatter: function () {
-        return `<b>${this.key}</b>: meta por hora:${this.y.toLocaleString()}`;
+        return `<b>meta por hora:</b>: ${this.y.toLocaleString()}`;
       },
     },
     plotOptions: {
@@ -95,11 +94,14 @@ const GraficoMaquina = () => {
   };
 
   return (
+    <>
+      <h1>Relatórios de produções</h1>
     <div className="card-grafico">
       <div className="radial" style={{ width: "100%", height: "400px", marginTop: '20px' }}>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </div>
+    </>
   )
 }
 
