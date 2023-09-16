@@ -148,7 +148,7 @@ const ThirdShift = ({  operadorId }) => {
 
   return (
     <section className='secao-tabela'>
-        <CTable style={{ marginTop: '20px'}}>
+        <CTable style={{ marginTop: '20px'}} hover responsive>
         <CTableHead >
           <CTableRow>
             <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Data</CTableHeaderCell>

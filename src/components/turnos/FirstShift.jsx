@@ -39,7 +39,7 @@ const FirstShift = ({  operadorId }) => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno');
+        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno/1');
         setProducoes(response.data.producoes);
         console.log(response.data.producoes)
       } catch (error) {
@@ -148,7 +148,7 @@ const FirstShift = ({  operadorId }) => {
 
   return (
     <section className='secao-tabela'>
-        <CTable style={{ marginTop: '20px'}}>
+        <CTable style={{ marginTop: '20px'}} hover responsive>
         <CTableHead >
           <CTableRow>
             <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518'}}>Data</CTableHeaderCell>
