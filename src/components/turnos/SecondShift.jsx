@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton } from '@coreui/react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import "./shift.css"
 
 const SecondShift = ({  operadorId }) => {
@@ -257,7 +257,7 @@ const SecondShift = ({  operadorId }) => {
       {turnoAberto && dadosSalvos && (
       <CTableHead>
         <CTableRow>
-          <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>1 ° Turno</CTableHeaderCell>
+          <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>2 ° Turno</CTableHeaderCell>
           <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Meta por Hora</CTableHeaderCell>
           <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Perda</CTableHeaderCell>
           <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Comentários</CTableHeaderCell>
@@ -289,29 +289,23 @@ const SecondShift = ({  operadorId }) => {
   })}
 </CTableBody>
 
-    </CTable>
-  {allRowsFilled && (
-  <CTable>
-    <CTableHead>
-    <CTableHeaderCell className='text-center'  style={{ backgroundColor: '#A4663C', color: '#221518' }}>
-            Produzido
-          </CTableHeaderCell>
-    </CTableHead>
-    <CTableBody>
-    <CTableRow>
-    <CTableDataCell className='text-center' >
-    {totalProduzido}
-    </CTableDataCell>
-    </CTableRow>
-    </CTableBody>
-    <CTableDataCell>
-    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#A4663C", border: 'none'}}>
+  <CTableDataCell className="text-center" style={{backgroundColor: "#A4663C"}}>
+  <a href="/relatorio" style={{ textDecoration: "none", color: "#000"}}>Ver relatórios</a>
+
+  </CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
+    {allRowsFilled && (
+    <CTableDataCell className='text-center' style={{backgroundColor: "#A4663C"}}>
+    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#221518", border: "none"}}>
   Fechar Turno 
 </CButton>
 
     </CTableDataCell>
-  </CTable>
   )}
+    </CTable>
+
+
     </section>
   );
 };

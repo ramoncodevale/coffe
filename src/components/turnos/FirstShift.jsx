@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton } from '@coreui/react';
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton, CSpinner } from '@coreui/react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 import "./shift.css"
 
 const FirstShift = ({  operadorId }) => {
@@ -12,6 +13,7 @@ const FirstShift = ({  operadorId }) => {
   const [dadosSalvos, setDadosSalvos] = useState(false);
   const [producoes, setProducoes] = useState([])
   const [turnoAberto, setTurnoAberto] = useState(true);
+  const [ isLoading, setIsLoading] = useState(true);
 
   const [totalProduzido, setTotalProduzido] = useState(0);
 
@@ -72,7 +74,7 @@ const FirstShift = ({  operadorId }) => {
       // Adicione o registro atual aos registros de turno
       setTurnoRegistros((prevRegistros) => [...prevRegistros, requestData]);
       setDadosSalvos(true);
-    
+      setIsLoading(false);
   
       // Limpe o formulário após o envio
       setFormData({
@@ -80,9 +82,9 @@ const FirstShift = ({  operadorId }) => {
         perda: '',
         comentario: '',
       });
-
+  
       if (currentRowIndex >= time.length - 1) {
-        // Se todas as linhas foram preenchidas, calcule a soma dos valores da coluna "Meta por Hora"
+        // Se todas as linhas foram preenchidas, calcule a soma dos valores da coluna "Quantidade"
         const somaProduzido = turnoRegistros.reduce((total, registro) => {
           return total + parseFloat(registro.quantidade || 0);
         }, 0);
@@ -93,8 +95,8 @@ const FirstShift = ({  operadorId }) => {
     } catch (error) {
       console.error('Ocorreu um erro ao enviar os dados do turno:', error);
     }
-   
   };
+  
   
   // Verifique se todas as linhas foram preenchidas
   const allRowsFilled = currentRowIndex >= time.length;
@@ -150,25 +152,43 @@ const FirstShift = ({  operadorId }) => {
   return (
     <section className='secao-tabela'>
      <div style={{ marginTop: '20px' }}>
-  <div style={{ backgroundColor: '#A4663C', color: '#221518', display: 'flex' }}>
-    <div className="text-center" style={{ flex: 1 }}><strong>Data</strong></div>
-    <div className="text-center" style={{ flex: 1 }}><strong>Operador</strong></div>
-    <div className="text-center" style={{ flex: 1 }}><strong>GE %</strong></div>
-    <div className="text-center" style={{ flex: 1 }}><strong>Maquinas</strong></div>
-    <div className="text-center" style={{ flex: 1 }}><strong>Meta Por Hora</strong></div>
-    <div className="text-center" style={{ flex: 1 }}><strong>Planejado</strong></div>
-  </div>
-  {producoes.map((item) => (
-    <div key={item.id} style={{ display: 'flex', borderBottom: '1px solid #ccc', backgroundColor: "#fff" }}>
-      <div className="text-center" style={{ flex: 1 }}>{format(new Date(item.data), 'dd/MM/yyyy')}</div>
-      <div className="text-center" style={{ flex: 1 }}>{item.operadore.nome}</div>
-      <div className="text-center" style={{ flex: 1 }}>{item.ger}</div>
-      <div className="text-center" style={{ flex: 1 }}>{item.maquina.nome}</div>
-      <div className="text-center" style={{ flex: 1 }}>{item.maquina.metaHora}</div>
-      <div className="text-center" style={{ flex: 1 }}>{item.planejado}</div>
-    </div>
-  ))}
+ {/* Primeira tabela */}
+<CTable className=" border border-dark" hover responsive>
+  <CTableHead>
+    <CTableRow>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Data</CTableHeaderCell>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Operador</CTableHeaderCell>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>GE %</CTableHeaderCell>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Maquinas</CTableHeaderCell>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Meta Por Hora</CTableHeaderCell>
+      <CTableHeaderCell className="text-center" style={{ backgroundColor: '#A4663C', color: '#221518' }}>Planejado</CTableHeaderCell>
+    </CTableRow>
+  </CTableHead>
+  <CTableBody>
+    {producoes.map((item) => (
+      <CTableRow key={item.id}>
+        <CTableDataCell className="text-center">{format(new Date(item.data), 'dd/MM/yyyy')}</CTableDataCell>
+        <CTableDataCell className="text-center">{item.operadore.nome}</CTableDataCell>
+        <CTableDataCell className="text-center">{item.ger}</CTableDataCell>
+        <CTableDataCell className="text-center">{item.maquina.nome}</CTableDataCell>
+        <CTableDataCell className="text-center">{item.maquina.metaHora}</CTableDataCell>
+        <CTableDataCell className="text-center">{item.planejado}</CTableDataCell>
+      </CTableRow>
+    ))}
+  </CTableBody>
+</CTable>
+
+  
 </div>
+
+{/* {isLoading && (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: '100%' }}
+            >
+              <CSpinner color="gray" />
+            </div>
+  )} */}
 
       <CTable className=" border border-dark" hover responsive>
         {!allRowsFilled && (
@@ -205,6 +225,7 @@ const FirstShift = ({  operadorId }) => {
                   type="text"
                   name="quantidade"
                   value={formData.quantidade}
+                  required
                   onChange={(e) => setFormData({ ...formData, quantidade: e.target.value })}
                   className='input-table'
                 />
@@ -272,29 +293,21 @@ const FirstShift = ({  operadorId }) => {
   })}
 </CTableBody>
 
-    </CTable>
+<CTableDataCell className="text-center" style={{backgroundColor: "#A4663C", }}>
+<a href="/relatorio" style={{ textDecoration: "none", color: "#000"}}>Ver relatórios</a>
+  </CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
   {allRowsFilled && (
-  <CTable>
-    <CTableHead>
-    <CTableHeaderCell className='text-center'  style={{ backgroundColor: '#A4663C', color: '#221518' }}>
-            Produzido
-          </CTableHeaderCell>
-    </CTableHead>
-    <CTableBody>
-    <CTableRow>
-    <CTableDataCell className='text-center' >
-    {totalProduzido}
-    </CTableDataCell>
-    </CTableRow>
-    </CTableBody>
-    <CTableDataCell>
-    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#A4663C", border: "none"}}>
+    <CTableDataCell className='text-center' style={{backgroundColor: "#A4663C"}}>
+    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#221518", border: "none"}}>
   Fechar Turno 
 </CButton>
 
     </CTableDataCell>
-  </CTable>
   )}
+    </CTable>
+
     </section>
   );
 };

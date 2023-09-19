@@ -14,19 +14,14 @@ import FirstShift from "./components/turnos/FirstShift"
 import SecondShift from "./components/turnos/SecondShift"
 import ThirdShift from "./components/turnos/ThirdShift"
 
-axios.interceptors.request.use((config) => {
-  const jwtToken = localStorage.getItem('jwtToken');
-  if (jwtToken) {
-    config.headers.Authorization = `Bearer ${jwtToken}`;
-  }
-  return config;
-});
+
 
 const App = () => {
   // const [isLoggedIn, setIsLoggedIn] =useState(false);
   return (
      <>
      {/* <Login /> */}
+     
      <BrowserRouter>
      <Navbar  />
         <Routes>
@@ -34,7 +29,7 @@ const App = () => {
           <Route path="/logout" element={<Logout />}  />
           <Route path="/cadastro" element={<Cadastro/>} />
           <Route path="/registro" element={<CadastrarRegistro/>} />
-          <Route path='/graficos' element={<Graficos />} />
+          <Route path='/relatorio' element={<Graficos />} />
           <Route path='/tabela' element={<Tabela />} />
           <Route path='/form' element={<Form />} />
           <Route path='/turno/1' element={<FirstShift />} />

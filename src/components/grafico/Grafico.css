@@ -1,5 +1,41 @@
-.card-grafico {
+.relatorio {
+    height: 100vh;
+}
+
+.relatorio h1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.list {
+    margin-top: 100px;
+ 
+}
+
+.shifts-header {
     background-color: var(--background-secundary);
-    width: 500px;
-    border-radius: 10px;
+}
+
+.section-select {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.select {
+    position: absolute;
+    z-index: 1000;
+}
+
+.icons-section {
+    margin-left: 100px;
+}
+
+.date-picker-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 1000;
 }

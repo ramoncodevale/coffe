@@ -67,15 +67,7 @@
     overflow-x: auto;
   }
 
-  .CTableHeaderCell {
-    font-size: 14px;
-    padding: 5px;
-  }
-
-  .CTableDataCell {
-    font-size: 14px;
-    padding: 5px;
-  }
+ 
 
   .input-table {
     font-size: 14px;

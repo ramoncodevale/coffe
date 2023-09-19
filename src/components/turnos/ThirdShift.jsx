@@ -288,30 +288,22 @@ const ThirdShift = ({  operadorId }) => {
     );
   })}
 </CTableBody>
-
-    </CTable>
+<CTableDataCell className="text-center" style={{backgroundColor: "#A4663C", }}>
+<a href="/relatorio" style={{ textDecoration: "none", color: "#000"}}>Ver relatórios</a>
+  </CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
   {allRowsFilled && (
-  <CTable>
-    <CTableHead>
-    <CTableHeaderCell className='text-center'  style={{ backgroundColor: '#A4663C', color: '#221518' }}>
-            Produzido
-          </CTableHeaderCell>
-    </CTableHead>
-    <CTableBody>
-    <CTableRow>
-    <CTableDataCell className='text-center' >
-    {totalProduzido}
-    </CTableDataCell>
-    </CTableRow>
-    </CTableBody>
-    <CTableDataCell>
-    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#A4663C", border: 'none'}}>
+    <CTableDataCell className='text-center' style={{backgroundColor: "#A4663C"}}>
+    <CButton onClick={handleFecharTurnoERedirecionar} className='btn-turno-fechar' style={{backgroundColor: "#221518", border: "none"}}>
   Fechar Turno 
 </CButton>
 
     </CTableDataCell>
-  </CTable>
   )}
+
+    </CTable>
+ 
     </section>
   );
 };
