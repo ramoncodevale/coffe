@@ -137,13 +137,10 @@ const ThirdShift = ({  operadorId }) => {
   const navigate = useNavigate();
   
   const handleFecharTurnoERedirecionar = () => {
-    // Outras ações para fechar o turno
   
-    // Defina turnoAberto como false para ocultar a tabela de registros de turno
     setTurnoAberto(false);
   
-    // Use useHistory para redirecionar o usuário para outra tela
-    navigate('/tabela'); // Substitua '/outra-tela' pelo caminho da tela para a qual deseja redirecionar o usuário
+    navigate('/relatorio');
   };
 
 
@@ -289,7 +286,7 @@ const ThirdShift = ({  operadorId }) => {
   })}
 </CTableBody>
 <CTableDataCell className="text-center" style={{backgroundColor: "#A4663C", }}>
-<a href="/relatorio" style={{ textDecoration: "none", color: "#000"}}>Ver relatórios</a>
+
   </CTableDataCell>
   <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
   <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>

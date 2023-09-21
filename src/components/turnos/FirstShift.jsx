@@ -42,7 +42,7 @@ const FirstShift = ({  operadorId }) => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno');
+        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno/1');
         setProducoes(response.data.producoes);
         console.log(response.data.producoes)
       } catch (error) {
@@ -139,13 +139,9 @@ const FirstShift = ({  operadorId }) => {
   const navigate = useNavigate();
   
   const handleFecharTurnoERedirecionar = () => {
-    // Outras ações para fechar o turno
-  
-    // Defina turnoAberto como false para ocultar a tabela de registros de turno
     setTurnoAberto(false);
   
-    // Use useHistory para redirecionar o usuário para outra tela
-    navigate('/tabela'); // Substitua '/outra-tela' pelo caminho da tela para a qual deseja redirecionar o usuário
+    navigate('/relatorio');
   };
 
 
@@ -294,9 +290,11 @@ const FirstShift = ({  operadorId }) => {
 </CTableBody>
 
 <CTableDataCell className="text-center" style={{backgroundColor: "#A4663C", }}>
-<a href="/relatorio" style={{ textDecoration: "none", color: "#000"}}>Ver relatórios</a>
+
   </CTableDataCell>
-  <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
+  <CTableDataCell style={{backgroundColor: "#A4663C"}}>
+
+  </CTableDataCell>
   <CTableDataCell style={{backgroundColor: "#A4663C"}}></CTableDataCell>
   {allRowsFilled && (
     <CTableDataCell className='text-center' style={{backgroundColor: "#A4663C"}}>

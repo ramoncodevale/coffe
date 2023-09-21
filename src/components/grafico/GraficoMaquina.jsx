@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import "react-datepicker/dist/react-datepicker.css";
+import CoffeError from "../../assets/coffe.jpg"
 
 const GraficoMaquina = () => {
   const [data, setData] = useState([]);
@@ -16,42 +17,79 @@ const GraficoMaquina = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showApplications, setShowApplications] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState("");
-  const [selectedFilterDate, setSelectedFilterDate] = useState(new Date());
+  const [selectedFilterDate, setSelectedFilterDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTurno, setSelectedTurno] = useState(1); 
-  const [filteredDataByTurno, setFilteredDataByTurno] = useState([]);
-
 
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
 
+  // Estados para armazenar os valores filtrados
+  const [filteredData, setFilteredData] = useState([]);
+  const initialDate = new Date();
+  const [selectedDateFilter, setSelectedDateFilter] = useState(initialDate);
+  const [selectedPeriodoFilter, setSelectedPeriodoFilter] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const formattedFilterDate = format(selectedFilterDate, "dd/MM/yyyy");
+        const formattedFilterDate = selectedDateFilter
+          ? format(selectedDateFilter, "yyyy-MM-dd")
+          : "";
+
         const response = await axios.get(`https://server-production-9d29.up.railway.app/listar/turno/${selectedTurno}`, {
           params: {
             date: formattedFilterDate,
-            periodoId: selectedTurno || null, // Use selectedTurno ou null
           },
           headers: {
             "Content-Type": 'application/json',
           }
         });
-    
+
         setData(response.data.producoesRegistro);
         setProducoes(response.data.producoes);
-      
+
+        const minDateFromAPI = new Date(response.data.producoes[0].data);
+        setMinDate(minDateFromAPI);
       } catch (error) {
         console.log(error);
       }
     };
-    
 
     fetchData();
-  }, [selectedFilterDate, selectedTurno]); // Atualize quando a data ou o turno selecionado mudar
+  }, [selectedDateFilter, selectedTurno]);
 
-  const totalProduzidoDoTurno = data.reduce((total, item) => total + item.quantidade, 0);
+  useEffect(() => {
+    const fetchPeriodo = async () => {
+      try {
+        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/periodo');
+        setPeriodo(response.data);
+        if (response.data.length > 0) {
+          setSelectedTurno(response.data[0].turno);
+        }
+      } catch (error) {
+        console.error('Ocorreu um erro ao buscar os periodo:', error);
+      }
+    };
+
+    fetchPeriodo();
+  }, []);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedDateFilter(date);
+    setShowDatePicker(false);
+  };
+
+  // Filtrar as produções com base na data e no período selecionados
+  const filteredProducoes = producoes.filter((producao) => {
+    return (
+      (!selectedDateFilter || format(new Date(producao.data), "yyyy-MM-dd") === format(selectedDateFilter, "yyyy-MM-dd")) &&
+      (!selectedPeriodoFilter || producao.periodo.turno === selectedPeriodoFilter)
+    );
+  });
+
+  const totalProduzidoDoTurno = filteredData.reduce((total, item) => total + item.quantidade, 0);
 
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
@@ -62,31 +100,6 @@ const GraficoMaquina = () => {
 
   const toggleApplications = () => {
     setShowApplications(!showApplications);
-    setShowDatePicker(false);
-  };
-
-  useEffect(() => {
-    const fetchPeriodo = async () => {
-      try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/periodo');
-        setPeriodo(response.data);
-      } catch (error) {
-        console.error('Ocorreu um erro ao buscar os periodo:', error);
-      }
-    };
-
-    fetchPeriodo();
-  }, []);
-
-
-  const filteredData = data.filter((item) => {
-    const itemDate = new Date(item.data);
-    return itemDate.toDateString() === selectedFilterDate.toDateString();
-  });
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setSelectedFilterDate(date);
     setShowDatePicker(false);
   };
 
@@ -107,6 +120,8 @@ const GraficoMaquina = () => {
                 <CButton style={{ backgroundColor: "#A4663C", border: "none" }} onClick={toggleDatePicker}>
                   <LiaCalendar fontSize={25} color="#000" />
 
+                </CButton>
+              </CTooltip>
                   {showDatePicker && (
                     <div className="date-picker-wrapper">
                       <DatePicker
@@ -120,8 +135,6 @@ const GraficoMaquina = () => {
                       />
                     </div>
                   )}
-                </CButton>
-              </CTooltip>
 
               <CTooltip
                 content="Turnos"
@@ -134,47 +147,50 @@ const GraficoMaquina = () => {
               {showApplications && (
                 <div className="section-select">
                   <select
-  name="turno"
-  id="turno"
-  className="select"
-  value={selectedTurno || ""}
-  onChange={(e) => {
-    setSelectedTurno(e.target.value || null); // Defina como null se o valor for vazio
-    setData([]); // Limpe os dados antigos quando um novo turno for selecionado
-    setProducoes([]);
-  }}
->
-  <option value="">Selecione um Turno</option>
-  {periodo.map((periodo) => (
-    <option key={periodo.id} value={periodo.id}>
-      {periodo.turno}
-    </option>
-  ))}
-</select>
-
+                    name="turno"
+                    id="turno"
+                    className="select"
+                    value={selectedTurno || ""}
+                    onChange={(e) => {
+                      setSelectedTurno(e.target.value || null);
+                    }}
+                  >
+                    <option value="">Selecione um Turno</option>
+                    {periodo.map((periodo) => (
+                      <option key={periodo.id} value={periodo.turno}>
+                        {periodo.turno}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
             </div>
           </CListGroupItem>
-          {/* Mostrar os resultados filtrados */}
+          {filteredProducoes.length === 0 ? (
+            <>
+                <img src={CoffeError} alt="coffe error" style={{ width: "100%", height: "400px"}} />
+                <CListGroupItem className="text-center" style={{ backgroundColor: "#A4663C",color: "#221518", border: "none"}}><strong>Nenhum dado disponível para o filtro selecionado.</strong></CListGroupItem>
+                </>
+          ) : (
+          <>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
             Operador<CBadge color="primary" shape="rounded-pill">
-              {producoes.map((item) => item.operadore.nome)}
+              {filteredProducoes.map((item) => item.operadore.nome)}
             </CBadge>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
             Ge %<CBadge color="primary" shape="rounded-pill">
-              {producoes.map((item) => item.ger)}
+              {filteredProducoes.map((item) => item.ger)}
             </CBadge>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
             Máquina<CBadge color="primary" shape="rounded-pill">
-              {producoes.map((item) => item.maquina.nome)}
+              {filteredProducoes.map((item) => item.maquina.nome)}
             </CBadge>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
             Planejado<CBadge color="primary" shape="rounded-pill">
-              {producoes.map((item) => item.planejado)}
+              {filteredProducoes.map((item) => item.planejado)}
             </CBadge>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
@@ -182,7 +198,8 @@ const GraficoMaquina = () => {
               {totalProduzidoDoTurno}
             </CBadge>
           </CListGroupItem>
-  
+          </>
+          )}    
         </CListGroup>
       </section>
     </>

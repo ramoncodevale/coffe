@@ -5,12 +5,12 @@
 .relatorio h1 {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    color: #fff;
+    margin-top: 50px;
+    color: var(--background-secundary);
 }
 
 .list {
-    margin-top: 100px;
+    margin-top: 50px;
  
 }
 
