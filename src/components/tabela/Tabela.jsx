@@ -7,6 +7,7 @@ import axios from 'axios';
 import FirstShift from '../../components/turnos/FirstShift'
 import SecondShift from '../../components/turnos/SecondShift'
 import ThirdShift from '../turnos/ThirdShift'
+import ptBR from 'date-fns/esm/locale/pt-BR/index.js';
 
 
 const Tabela = () => {
@@ -66,7 +67,7 @@ const handleAbrirTurno = () => {
 
   const requestData = {
     operadorId: formData.operadorId,
-    data: format(today, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", { timeZone: 'UTC' }),
+    data: today,
     periodoId: formData.periodoId,
     ger: formData.ger,
     maquinaId: formData.maquinaId,
