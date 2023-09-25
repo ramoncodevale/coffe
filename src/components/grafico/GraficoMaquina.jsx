@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Grafico.css';
 import axios from 'axios';
-import { CListGroupItem, CListGroup, CBadge, CTooltip, CButton } from '@coreui/react';
+import { CListGroupItem, CListGroup,  CTooltip, CButton } from '@coreui/react';
 import { LiaCalendar } from "react-icons/lia"
 import { BsStopwatch } from "react-icons/bs"
 import DatePicker from "react-datepicker";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Link } from "react-router-dom"
 import "react-datepicker/dist/react-datepicker.css";
 import CoffeError from "../../assets/coffe.jpg"
 
@@ -154,6 +155,7 @@ const GraficoMaquina = () => {
                     value={selectedTurno || ""}
                     onChange={(e) => {
                       setSelectedTurno(e.target.value || null);
+                      setShowApplications(false)
                     }}
                   >
                     <option value="">Selecione um Turno</option>
@@ -175,33 +177,62 @@ const GraficoMaquina = () => {
           ) : (
           <>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Operador<CBadge color="primary" shape="rounded-pill">
+            Data Selecionada<div>
+              <strong>
+            {selectedDate.toLocaleDateString("pt-BR")}
+            </strong>
+            </div>
+          </CListGroupItem>
+          <CListGroupItem className="d-flex justify-content-between align-items-center">
+            Turno Selecionado<div>
+            <strong>
+            {selectedTurno}
+            </strong>
+            </div>
+          </CListGroupItem>
+          <CListGroupItem className="d-flex justify-content-between align-items-center">
+            Operador<div>
+              <strong>
               {filteredProducoes.map((item) => item.operadore.nome)}
-            </CBadge>
+              </strong>
+            </div>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Ge %<CBadge color="primary" shape="rounded-pill">
+            Ge %<div>
+              <strong>
               {filteredProducoes.map((item) => item.ger)}
-            </CBadge>
+              </strong>
+            </div>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Máquina<CBadge color="primary" shape="rounded-pill">
+            Máquina<div>
+              <strong>
               {filteredProducoes.map((item) => item.maquina.nome)}
-            </CBadge>
+              </strong>
+            </div>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Planejado<CBadge color="primary" shape="rounded-pill">
+            Planejado<div>
+              <strong>
               {filteredProducoes.map((item) => item.planejado)}
-            </CBadge>
+              </strong>
+            </div>
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Total produzido <CBadge color="primary" shape="rounded-pill">
+            Total produzido <div>
+            <strong>
             {filteredProducoes.map((item) => item.maquina.metaHora)}
-            </CBadge>
+            </strong>
+            </div>
           </CListGroupItem>
           </>
           )}    
         </CListGroup>
+        <div style={{ marginTop: "10px"}}>
+        <Link to="/tabela" className="link-registro">
+      Criar mais registros
+    </Link>
+        </div>
       </section>
     </>
   )

@@ -39,3 +39,12 @@
     position: absolute;
     z-index: 1000;
 }
+
+.link-registro {
+    color: #A4663C;
+    padding: 10px;
+}
+
+.link-registro:hover {
+    color: #fff;
+}

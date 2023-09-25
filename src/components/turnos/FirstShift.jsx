@@ -305,7 +305,7 @@ const FirstShift = ({  operadorId }) => {
     </CTableDataCell>
   )}
     </CTable>
-
+    
     </section>
   );
 };

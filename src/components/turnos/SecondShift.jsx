@@ -300,7 +300,7 @@ const SecondShift = ({  operadorId }) => {
   )}
     </CTable>
 
-
+   
     </section>
   );
 };

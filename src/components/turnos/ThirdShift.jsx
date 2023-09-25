@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton } from '@coreui/react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import "./shift.css"
 
 const ThirdShift = ({  operadorId }) => {
@@ -301,6 +301,7 @@ const ThirdShift = ({  operadorId }) => {
 
     </CTable>
  
+   
     </section>
   );
 };
