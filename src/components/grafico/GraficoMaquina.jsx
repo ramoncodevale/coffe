@@ -37,7 +37,8 @@ const GraficoMaquina = () => {
           ? format(selectedDateFilter, "yyyy-MM-dd")
           : "";
 
-        const response = await axios.get(`https://server-production-9d29.up.railway.app/listar/turno/${selectedTurno}`, {
+        const response = await axios.get(`
+        https://coffe-server-1.onrender.com/listar/turno/${selectedTurno}`, {
           params: {
             date: formattedFilterDate,
           },
@@ -62,7 +63,7 @@ const GraficoMaquina = () => {
   useEffect(() => {
     const fetchPeriodo = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/periodo');
+        const response = await axios.get('https://coffe-server-1.onrender.com/listar/periodo');
         setPeriodo(response.data);
         if (response.data.length > 0) {
           setSelectedTurno(response.data[0].turno);
@@ -195,7 +196,7 @@ const GraficoMaquina = () => {
           </CListGroupItem>
           <CListGroupItem className="d-flex justify-content-between align-items-center">
             Total produzido <CBadge color="primary" shape="rounded-pill">
-              {totalProduzidoDoTurno}
+            {filteredProducoes.map((item) => item.maquina.metaHora)}
             </CBadge>
           </CListGroupItem>
           </>

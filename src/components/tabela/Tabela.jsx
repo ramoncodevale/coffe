@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { CTable, CTableHead, CTableRow,CTableHeaderCell, CTableBody, CTableDataCell, CCol, CButton} from '@coreui/react'
 import './Tabela.css';
 import { useNavigate } from 'react-router-dom';
+import { format } from "date-fns"
 import axios from 'axios';
-import { format } from 'date-fns';
-import { formatISO9075 } from 'date-fns';
 import FirstShift from '../../components/turnos/FirstShift'
 import SecondShift from '../../components/turnos/SecondShift'
-import ThirdShift from '../../components/turnos/ThirdShift'
+import ThirdShift from '../turnos/ThirdShift'
 
 
 const Tabela = () => {
@@ -25,7 +24,9 @@ const [isTurnoAberto, setIsTurnoAberto] = useState(false);
 
 
 const today = new Date();
+
 const formattedDate = format(today, 'dd/MM/yyyy');
+
 const navigate = useNavigate()
 
 
@@ -45,7 +46,7 @@ const navigate = useNavigate()
 
 const enviarDadosDoTurno = async (requestData) => {
   try {
-    const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/producao', requestData);
+    const response = await axios.post('https://coffe-server-1.onrender.com/cadastrar/producao', requestData);
     console.log('Dados do turno enviados com sucesso:', response.data);
   } catch (error) {
     console.error('Ocorreu um erro ao enviar os dados do turno:', error);
@@ -65,7 +66,7 @@ const handleAbrirTurno = () => {
 
   const requestData = {
     operadorId: formData.operadorId,
-    data: formatISO9075(today),
+    data: format(today, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", { timeZone: 'UTC' }),
     periodoId: formData.periodoId,
     ger: formData.ger,
     maquinaId: formData.maquinaId,
@@ -81,7 +82,7 @@ const handleAbrirTurno = () => {
 useEffect(() => {
   const fetchOperadores = async () => {
     try {
-      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/operador');
+      const response = await axios.get('https://coffe-server-1.onrender.com/listar/operador');
       setOperadores(response.data);
     } catch (error) {
       console.error('Ocorreu um erro ao buscar os operadores:', error);
@@ -94,7 +95,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchPeriodo = async () => {
     try {
-      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/periodo');
+      const response = await axios.get('https://coffe-server-1.onrender.com/listar/periodo');
       setPeriodo(response.data);
     } catch (error) {
       console.error('Ocorreu um erro ao buscar os periodo:', error);
@@ -107,7 +108,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchMaquinas = async () => {
     try {
-      const response = await axios.get('https://server-production-9d29.up.railway.app/listar/maquina');
+      const response = await axios.get('https://coffe-server-1.onrender.com/listar/maquina');
       setMaquinas(response.data);
     } catch (error) {
       console.error('Ocorreu um erro ao buscar as maquinas:', error);

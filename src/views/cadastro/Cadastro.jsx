@@ -69,7 +69,7 @@ const Cadastro = () => {
 
 
     try {
-      const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar-usuario',{
+      const response = await axios.post('https://coffe-server-1.onrender.com/cadastrar-usuario',{
         name: formValues.name,
         surname: formValues.surname,
         email: formValues.email,

@@ -30,7 +30,7 @@ const FirstShift = ({  operadorId }) => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/horario/1');
+        const response = await axios.get('https://coffe-server-1.onrender.com/listar/horario/1');
         setTime(response.data);
       } catch (error) {
         console.log(error);
@@ -42,7 +42,7 @@ const FirstShift = ({  operadorId }) => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get('https://server-production-9d29.up.railway.app/listar/turno/1');
+        const response = await axios.get('https://coffe-server-1.onrender.com/listar/turno');
         setProducoes(response.data.producoes);
         console.log(response.data.producoes)
       } catch (error) {
@@ -64,7 +64,7 @@ const FirstShift = ({  operadorId }) => {
       };
   
       // Faça a solicitação POST para salvar os dados
-      const response = await axios.post('https://server-production-9d29.up.railway.app/cadastrar/turno', requestData);
+      const response = await axios.post('https://coffe-server-1.onrender.com/cadastrar/turno', requestData);
   
       console.log('Dados do turno enviados com sucesso:', response.data);
   
@@ -103,7 +103,7 @@ const FirstShift = ({  operadorId }) => {
 
   const fetchTurnoRegistros = async () => {
     try {
-      const response = await axios.get(`https://server-production-9d29.up.railway.app/listar/turno/${operadorId}`);
+      const response = await axios.get(`https://coffe-server-1.onrender.com/listar/turno/${operadorId}`);
       setTurnoRegistros(response.data);
     } catch (error) {
       console.error('Ocorreu um erro ao buscar os registros de turno:', error);
