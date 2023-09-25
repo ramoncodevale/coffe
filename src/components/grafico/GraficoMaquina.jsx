@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Grafico.css';
 import axios from 'axios';
-import { CListGroupItem, CListGroup,  CTooltip, CButton } from '@coreui/react';
+import { CListGroupItem, CListGroup,  CTooltip, CButton, CSpinner } from '@coreui/react';
 import { LiaCalendar } from "react-icons/lia"
 import { BsStopwatch } from "react-icons/bs"
 import DatePicker from "react-datepicker";
@@ -21,6 +21,7 @@ const GraficoMaquina = () => {
   const [selectedFilterDate, setSelectedFilterDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTurno, setSelectedTurno] = useState(1); 
+  const [isLoading, setIsLoading] = useState(true)
 
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
@@ -50,6 +51,7 @@ const GraficoMaquina = () => {
 
         setData(response.data.producoesRegistro);
         setProducoes(response.data.producoes);
+        setIsLoading(false)
 
         const minDateFromAPI = new Date(response.data.producoes[0].data);
         setMinDate(minDateFromAPI);
@@ -169,7 +171,11 @@ const GraficoMaquina = () => {
               )}
             </div>
           </CListGroupItem>
-          {filteredProducoes.length === 0 ? (
+          {isLoading ? (
+            <div className="d-flex justify-content-center align-items-center">
+            <CSpinner color="white" />
+          </div>
+          ) : filteredProducoes.length === 0 ? (
             <>
                 <img src={CoffeError} alt="coffe error" style={{ width: "100%", height: "400px"}} />
                 <CListGroupItem className="text-center" style={{ backgroundColor: "#A4663C",color: "#221518", border: "none"}}><strong>Nenhum dado disponível para o filtro selecionado.</strong></CListGroupItem>
