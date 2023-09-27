@@ -11,6 +11,9 @@ import { Link } from "react-router-dom"
 import "react-datepicker/dist/react-datepicker.css";
 import CoffeError from "../../assets/coffe.jpg"
 
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official"
+
 const GraficoMaquina = () => {
   const [data, setData] = useState([]);
   const [producoes, setProducoes] = useState([]);
@@ -107,6 +110,119 @@ const GraficoMaquina = () => {
     setShowDatePicker(false);
   };
 
+  const formatted = filteredProducoes
+  .map((job) => ({
+    ...job,
+    operadore: job.operadore.nome,
+    data: format(new Date(job.data), "dd/MM/yyyy"),
+    planejado: parseInt(job.planejado),
+    ger: parseInt(job.ger),
+    metaHora: parseInt(job.maquina.metaHora),
+  }))
+ 
+
+
+  const options = {
+    chart: {
+      backgroundColor: "transparent",
+      height: 400,
+      type: "column",
+      plotBorderWidth: 0 ,
+    },
+    title: "jobs",
+    tooltip: {
+      formatter: function () {
+        const category = formatted[this.point.index];
+        const dataType = this.series.name === "Planejado" ? "Planejado" : "Produzido";
+        return `<strong>${dataType}:</strong> ${this.y.toLocaleString()} <br></br> <strong>Operador:</strong> ${category.operadore} <br></br> 
+        <strong>GE%:</strong> ${category.ger}
+        `;
+      },
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      style: {
+        color: '#dedede', // Cor do texto do tooltip
+      },
+    },
+    xAxis: {
+      categories: formatted.map((job) => job.data),
+      labels: {
+        style: {
+          color: "#212121",
+        },
+      },
+      min: 0,
+    },
+    yAxis: {
+      title: {
+        text: "Valores planejados",
+      color: "#000" // Altere o título do eixo y conforme necessário
+      },
+      labels: {
+        fontWeight: "normal",
+        style: {
+          color: "#000",
+        },
+      },
+    },
+    
+    legend: {
+      verticalAlign: "top",
+      itemCheckboxStyle: {
+        marginBottom: "-20px",
+      },
+      itemHiddenStyle: {
+        color: "#ccc",
+      },
+      itemStyle: {
+        fontWeight: "normal",
+        color: "#000",
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 1000,
+            },
+            chartOptions: {
+              legend: {
+                align: "center",
+                verticalAlign: "bottom",
+                layout: "horizontal",
+              },
+            },
+          },
+        ],
+      },
+    },
+    series: [
+      // {
+      //   type: "line",
+      //   name: "Ge %",
+      //   color: "darkgreen",
+      //   data: formatted.map((job) => job.ger),
+      //   connectNulls: true,
+      // },
+    
+      {
+        type: "column",
+        name: "Planejado",
+        data: formatted.map((job) => job.planejado),
+        color: "#D7263D",
+        connectNulls: true,
+      },
+      {
+        type: "column",
+        name: "Produzido",
+        data: formatted.map((job) => job.metaHora),
+        color: "#20FC8F",
+        connectNulls: true,
+      },
+    ],
+    accessibility: {
+      enabled: false
+    }
+  };
+
   return (
     <>
       <section className="relatorio">
@@ -171,6 +287,7 @@ const GraficoMaquina = () => {
               )}
             </div>
           </CListGroupItem>
+          </CListGroup>
           {isLoading ? (
             <div className="d-flex justify-content-center align-items-center">
             <CSpinner color="white" />
@@ -182,58 +299,18 @@ const GraficoMaquina = () => {
                 </>
           ) : (
           <>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Data Selecionada<div>
-              <strong>
-            {selectedDate.toLocaleDateString("pt-BR")}
-            </strong>
+               <div
+              className="box-chart"
+              style={{ height: "400px" }}
+            >
+              <HighchartsReact
+                className="hightcharts"
+                highcharts={Highcharts}
+                options={options}
+              />
             </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Turno Selecionado<div>
-            <strong>
-            {selectedTurno}
-            </strong>
-            </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Operador<div>
-              <strong>
-              {filteredProducoes.map((item) => item.operadore.nome)}
-              </strong>
-            </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Ge %<div>
-              <strong>
-              {filteredProducoes.map((item) => item.ger)}
-              </strong>
-            </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Máquina<div>
-              <strong>
-              {filteredProducoes.map((item) => item.maquina.nome)}
-              </strong>
-            </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Planejado<div>
-              <strong>
-              {filteredProducoes.map((item) => item.planejado)}
-              </strong>
-            </div>
-          </CListGroupItem>
-          <CListGroupItem className="d-flex justify-content-between align-items-center">
-            Total produzido <div>
-            <strong>
-            {filteredProducoes.map((item) => item.maquina.metaHora)}
-            </strong>
-            </div>
-          </CListGroupItem>
           </>
-          )}    
-        </CListGroup>
+          )}
         <div style={{ marginTop: "10px"}}>
         <Link to="/tabela" className="link-registro">
       Criar mais registros
