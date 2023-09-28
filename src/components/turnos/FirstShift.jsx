@@ -40,17 +40,30 @@ const FirstShift = ({  operadorId }) => {
   }, []);
 
   useEffect(() => {
-    const fetchTime = async () => {
+    const fetchLatestTurno = async () => {
       try {
         const response = await axios.get('https://coffe-server-1.onrender.com/listar/turno');
-        setProducoes(response.data.producoes);
-        console.log(response.data.producoes)
+        const producoesData = response.data.producoes;
+  
+        // Verifique se há produções
+        if (producoesData.length > 0) {
+          // Ordene as produções por data em ordem decrescente
+          producoesData.sort((a, b) => new Date(b.data) - new Date(a.data));
+  
+          // Pegue apenas o último turno
+          const ultimoTurno = producoesData[0];
+          
+          // Defina o estado producoes com o último turno
+          setProducoes([ultimoTurno]);
+        }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
-    fetchTime();
+  
+    fetchLatestTurno();
   }, []);
+  
 
   const handleSave = async () => {
     try {
